@@ -8,6 +8,7 @@ public class USD extends Currency{
 	IDR currency =  new IDR();
 	
 	public USD(double value) {
+		super(value);
 		this.value = value;
 	}
 	public double getValue() {
@@ -19,6 +20,11 @@ public class USD extends Currency{
 	@Override
 	public void toIDR() {		
 			this.value = this.getValue() * this.getNilaiTukarSekarang(); 
+//			currency.addValue(this.getValue());
+	}
+	@Override
+	public void addValue(double value) {
+		this.value += value;
 	}
 
 }

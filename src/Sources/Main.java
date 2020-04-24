@@ -7,7 +7,8 @@ public class Main {
 		Currency check = new USD(30);
 		System.out.println(test.getValue());
 		check.toIDR();
-		System.out.println(check.getValue());
+		test.addValue(check.getValue());
+		System.out.println(test.getValue());
 	}
 
 }

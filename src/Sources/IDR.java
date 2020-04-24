@@ -5,6 +5,7 @@ public class IDR extends Currency{
 	public IDR() {
 	}
 	public IDR(double value) {
+		super(value);
 		this.value = value;
 	}
 	
