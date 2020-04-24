@@ -19,7 +19,6 @@ public class USD extends Currency{
 	@Override
 	public void toIDR() {		
 			this.value = this.getValue() * this.getNilaiTukarSekarang(); 
-			currency.addValue(this.getValue());
 	}
 
 }
