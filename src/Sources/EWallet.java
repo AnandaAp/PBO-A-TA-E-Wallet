@@ -1,5 +1,7 @@
 package Sources;
 
-public abstract class EWallet {
+import java.util.Scanner;
 
+public abstract class EWallet {
+	public abstract void Register(String nama, String tanggalLahir, String password, String email, String alamat);
 }

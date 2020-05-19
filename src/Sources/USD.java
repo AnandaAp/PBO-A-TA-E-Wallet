@@ -1,15 +1,16 @@
 package Sources;
 
 public class USD extends Currency{
+	//we using the currency from date 16 mei 2020
+	//$1 USD = 14.865 IDR
 	private double value;
-	//we using the currency from date 24 April 2020
-	//$1 USD = 15.400 IDR
-	private final double nilaiTukarSekarang = 15400;
+	private final double nilaiTukarSekarang = 14865;
 	IDR currency =  new IDR();
 	
 	public USD(double value) {
 		super(value);
 		this.value = value;
+		this.toIDR();
 	}
 	public double getValue() {
 		return this.value;
@@ -20,7 +21,7 @@ public class USD extends Currency{
 	@Override
 	public void toIDR() {		
 			this.value = this.getValue() * this.getNilaiTukarSekarang(); 
-//			currency.addValue(this.getValue());
+//			currency.addValue(this.value);
 	}
 	@Override
 	public void addValue(double value) {

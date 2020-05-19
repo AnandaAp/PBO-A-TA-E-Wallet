@@ -3,12 +3,14 @@ package Sources;
 public class Main {
 
 	public static void main(String[] args) {
-		Currency test = new IDR(500000);
-		Currency check = new USD(30);
-		System.out.println(test.getValue());
-		check.toIDR();
-		test.addValue(check.getValue());
-		System.out.println(test.getValue());
+		UserWallet r = new UserWallet();
+		Wallet w = new Wallet();
+		w.tambahUser(r);
+		w.print();
+		w.addSaldo(new IDR(500000));
+		w.print();
+		w.addSaldo(new USD(30));
+		w.print();
 	}
 
 }
