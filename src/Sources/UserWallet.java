@@ -67,7 +67,6 @@ public class UserWallet extends EWallet{
 					line = fileInput.readLine();
 					System.out.println(line);
 					System.out.println("email cek :"+this.getEmail());
-					
 					if(this.getEmail().equals(line)) {
 						cek = true;
 						System.out.println(cek);
@@ -101,7 +100,7 @@ public class UserWallet extends EWallet{
 				FileWriter Write = new FileWriter(file);
 				Write.write(""+this.getNama()+"\n"+this.getPassword()+"\n"+ 
 						    this.getEmail() + "\n" + this.getTanggalLahir() +
-						    "\n" + this.getAlamat());
+						    "\n" + this.getAlamat()+"\n"+this.getSaldo());
 				Write.close();
 			} catch (IOException e) {
 				e.printStackTrace();
