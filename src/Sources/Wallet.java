@@ -8,13 +8,13 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 public class Wallet{
 	public JFrame frame;
 	private JTextField txtUsername;
 	private JPasswordField passwordField;
-	
 	
 	public Wallet(UserWallet u) {
 		this.initialize(u);
