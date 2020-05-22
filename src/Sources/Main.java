@@ -3,7 +3,7 @@ package Sources;
 import java.awt.EventQueue;
 
 public class Main {
-	public static int countUser;
+	public static String User;
 	public static void main(String[] args) throws Exception {
 		UserWallet r = new UserWallet();
 //		Wallet w = new Wallet();
