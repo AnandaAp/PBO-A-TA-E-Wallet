@@ -4,6 +4,11 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -55,8 +60,7 @@ public class Wallet{
 		JButton btnNewButton = new JButton("Login");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String email = txtUsername.getText(),pass = passwordField.getText();
-				
+				readArray("User.txt", txtUsername, passwordField, arg0, u);
 			}
 		});
 		
@@ -79,14 +83,89 @@ public class Wallet{
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnNewButton_1.setBounds(10, 227, 89, 23);
 		frame.getContentPane().add(btnNewButton_1);
-		
-		
 	}
+	
 	public void MyButton1ActionPerformed(ActionEvent evt,UserWallet u) { 
 		register jfrm1= new register(u); 
 		jfrm1.frame.setVisible(true);
 		this.frame.setVisible(false);
 		this.frame.setDefaultCloseOperation(this.frame.EXIT_ON_CLOSE);
 		this.frame.dispose();
-	} 
+	}
+	
+	public void readArray (String File, JTextField txtUsername, JPasswordField passwordField, ActionEvent x, UserWallet u) {
+		String email = txtUsername.getText(),pass = passwordField.getText();
+		int line = 0;
+		BufferedReader fileInput;
+		try {
+			fileInput = new BufferedReader(new FileReader(new File("user.txt")));
+			String line2;
+			try {
+				line2 = fileInput.readLine();
+				while(line2 != null) {
+					line+=1;
+					line2 = fileInput.readLine();
+				}
+				fileInput.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String[] words = new String[line];
+		int i =0;
+		BufferedReader fileHasil;
+		try {
+			fileHasil = new BufferedReader(new FileReader(new File("user.txt")));
+			String line2;
+			try {
+				line2 = fileHasil.readLine();
+				while(line2 != null) {
+					words[i] = line2;	
+					i++;
+					line2 = fileHasil.readLine();
+				}
+				fileHasil.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		for(int j=1; j < words.length; j+=4) {
+			if(words[j].equals(email) && words[j+1].equals(pass)) {
+				Main.User = email;
+				this.ToHome(x, u);
+				break;
+			}
+			else if(!words[j].equals(email) && !words[j+1].equals(pass) && j+2==words.length) {
+				JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!", "Login", JOptionPane.WARNING_MESSAGE);
+				break;
+			}
+			else if(!words[j].equals(email) && words[j+1].equals(pass) && j+2==words.length) {
+				JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!", "Login", JOptionPane.WARNING_MESSAGE);
+				break;
+			}
+			else if(words[j].equals(email) && !words[j+1].equals(pass) && j+2==words.length) {
+				JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!", "Login", JOptionPane.WARNING_MESSAGE);
+				break;
+			}
+		}
+	}
+	
+	public void ToHome(ActionEvent evt,UserWallet u) { 
+		Home jfrm1= new Home(u); 
+		jfrm1.frame.setVisible(true);
+		this.frame.setVisible(false);
+		this.frame.setDefaultCloseOperation(this.frame.EXIT_ON_CLOSE);
+		this.frame.dispose();
+	}
 }
