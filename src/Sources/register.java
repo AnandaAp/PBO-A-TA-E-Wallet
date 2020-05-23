@@ -12,17 +12,17 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 
-public class register extends JFrame {
+public class register{
 	public JFrame frame;
 	private JTextField fullname;
 	private JTextField email;
 	private JTextField birth;
 	private JTextField address;
 	public static boolean cek = false;
-	private JPasswordField passwordField;
 	public String strRegEx = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=\\S+$).{8,}$";
+	public String emailPattern = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+	public String dateRegEx = "(0[1-9]|[12][0-9]|[3][01]) (Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember|januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember) \\d{4}";
 	public register(UserWallet u) {
 		this.initialize(u);
 	}
@@ -69,10 +69,10 @@ public class register extends JFrame {
 		frame.getContentPane().add(passwordField);
 		String cekPass = passwordField.getText();
 		//password warning
-		JLabel lblNewLabel_6_1 = new JLabel("password harus: minimal 8 karakter, 1 huruf kecil, 1 huruf besar, 1 angka, dan 1 simbol");
+		JLabel lblNewLabel_6_1 = new JLabel("password harus: minimal 8 karakter, 1 huruf kecil, 1 huruf besar, 1 angka, dan 1 simbol(!@#$%^&*)");
 		lblNewLabel_6_1.setForeground(Color.RED);
 		lblNewLabel_6_1.setFont(new Font("Tahoma", Font.ITALIC, 10));
-		lblNewLabel_6_1.setBounds(118, 140, 400, 14);
+		lblNewLabel_6_1.setBounds(118, 140, 446, 14);
 		frame.getContentPane().add(lblNewLabel_6_1);
 		//address
 		JLabel lblNewLabel_4 = new JLabel("Address");
@@ -94,7 +94,7 @@ public class register extends JFrame {
 		birth.setBounds(118, 203, 203, 20);
 		frame.getContentPane().add(birth);
 		
-		JLabel lblNewLabel_6 = new JLabel("ex. 12 August 1998");
+		JLabel lblNewLabel_6 = new JLabel("ex. 12 Agustus 1998");
 		lblNewLabel_6.setFont(new Font("Tahoma", Font.ITALIC, 11));
 		lblNewLabel_6.setBounds(118, 234, 100, 14);
 		frame.getContentPane().add(lblNewLabel_6);
@@ -135,16 +135,23 @@ public class register extends JFrame {
 			if(!nama.isEmpty() && !Email.isEmpty() && !alamat.isEmpty()
 				&& !password.isEmpty() && !tanggalLahir.isEmpty()
 			) {
-				Pattern patt = Pattern.compile(strRegEx);
-				Matcher match=patt.matcher(password);
-				boolean mat = match.matches();
+				Pattern patt = Pattern.compile(strRegEx),emPatt = Pattern.compile(emailPattern),
+						date = Pattern.compile(dateRegEx);
+				Matcher match=patt.matcher(password),matchEm = emPatt.matcher(Email),
+						matchDate = date.matcher(tanggalLahir);
+				boolean mat = match.matches(),emMat = matchEm.matches(), dateMat = matchDate.matches();
+				
+				
 				if(!mat) {
-					System.out.println("tidak sesuai pattern,password:"+password+" panjang:"+password.length());
 					JOptionPane.showMessageDialog(frame, "Password tidak sesuai kriteria","Password Error Message",JOptionPane.WARNING_MESSAGE);
-					System.out.println("error pass");
+				}
+				else if(!emMat) {
+					JOptionPane.showMessageDialog(frame, "Format Email Salah","Email Error Message",JOptionPane.WARNING_MESSAGE);
+				}
+				else if(!dateMat) {
+					JOptionPane.showMessageDialog(frame, "Format tanggal lahir Salah","Email Error Message",JOptionPane.WARNING_MESSAGE);
 				}
 				else {
-					System.out.println("semua benar");
 					cek = u.Register(nama, tanggalLahir, password, Email, alamat,cek);
 					if(cek == true) {
 						JOptionPane.showMessageDialog(frame, "Email sudah pernah digunakan","Register",JOptionPane.WARNING_MESSAGE);
@@ -159,8 +166,6 @@ public class register extends JFrame {
 			else {
 				JOptionPane.showMessageDialog(frame, "Data tidak boleh ada yang kosong!!!",
 						  					  "Register",JOptionPane.WARNING_MESSAGE);
-			}
-			System.out.println("keluar if");
-	
+			}	
 	}
 }
