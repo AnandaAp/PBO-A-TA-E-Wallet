@@ -20,7 +20,7 @@ public class register{
 	private JTextField birth;
 	private JTextField address;
 	public static boolean cek = false;
-	public String strRegEx = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=\\S+$).{8,}$";
+	public String strRegEx = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}:;'/?>.<,¡™£¢§¶•ªº–≠“‘«æ…ÚÆ¯˘¿Â˜ı◊])(?=\\S+$).{8,}$";
 	public String emailPattern = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
 	public String dateRegEx = "(0[1-9]|[12][0-9]|[3][01]) (Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember|januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember) \\d{4}";
 	public register(UserWallet u) {
