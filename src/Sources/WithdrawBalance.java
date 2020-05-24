@@ -16,6 +16,8 @@ import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -123,64 +125,66 @@ public class WithdrawBalance {
 		double balance1 = Double.parseDouble(balance);
 		//IDR check
 		if(!value.isEmpty()) {
-			double saldo = balance1 - value1;
+			if(value1 <= balance1 && value1 >0) {
+				double saldo = balance1 - value1;
+				File f2 = new File("profile/"+Main.User+".txt");
+				File file = new File("profile/temp.txt");
 			
-			File f2 = new File("profile/"+Main.User+".txt");
-			File file = new File("profile/temp.txt");
-		
-//Overwrite file	
-			
-			if(!file.exists()) {
-				try {
-					file.createNewFile();
-					FileWriter Write = new FileWriter(file);
-			
-					Write.write(""+name+"\n"+password+"\n"+ 
+	//Overwrite file	
+				
+				if(!file.exists()) {
+					try {
+						file.createNewFile();
+						FileWriter Write = new FileWriter(file);
+				
+						Write.write(""+name+"\n"+password+"\n"+ 
+								    email + "\n" + brth +
+								    "\n" + address+"\n"+Math.round(saldo));
+						Write.close();
+					} 
+					catch (IOException e) {
+						e.printStackTrace();
+					}
+					
+				}
+				
+				else {
+					FileWriter reWrite;
+					try {
+						reWrite = new FileWriter(file,false);
+						reWrite.write(""+name+"\n"+password+"\n"+ 
 							    email + "\n" + brth +
 							    "\n" + address+"\n"+Math.round(saldo));
-					Write.close();
-				} 
-				catch (IOException e) {
-					e.printStackTrace();
+						System.out.println("ternyata masuk else");
+						reWrite.close();
+					} 
+					catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}	
+					
 				}
 				
+				if(f2.exists()) {
+					FileWriter reWrite;
+					try {
+						reWrite = new FileWriter(f2,false);
+						reWrite.write(""+name+"\n"+password+"\n"+ 
+							    email + "\n" + brth +
+							    "\n" + address+"\n"+Math.round(saldo));
+						System.out.println("ternyata masuk else");
+						reWrite.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+							
 			}
-			
+				//overwrite file end
+			}
 			else {
-				FileWriter reWrite;
-				try {
-					reWrite = new FileWriter(file,false);
-					reWrite.write(""+name+"\n"+password+"\n"+ 
-						    email + "\n" + brth +
-						    "\n" + address+"\n"+Math.round(saldo));
-					System.out.println("ternyata masuk else");
-					reWrite.close();
-				} 
-				catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}	
-				
+				JOptionPane.showMessageDialog(frame, "Input yang anda masukan salah","Input Error",JOptionPane.WARNING_MESSAGE);
 			}
-			
-			if(f2.exists()) {
-				FileWriter reWrite;
-				try {
-					reWrite = new FileWriter(f2,false);
-					reWrite.write(""+name+"\n"+password+"\n"+ 
-						    email + "\n" + brth +
-						    "\n" + address+"\n"+Math.round(saldo));
-					System.out.println("ternyata masuk else");
-					reWrite.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-						
-		}
-			//overwrite file end
-
-		}
-		
-}
+		}	
+	}
 }
