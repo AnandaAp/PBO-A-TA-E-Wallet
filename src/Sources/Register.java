@@ -19,6 +19,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.*;
 import java.awt.geom.*;
+import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 public class Register extends AbstractBorder{
 	public JFrame frame;
@@ -180,7 +181,7 @@ public class Register extends AbstractBorder{
 		frame.getContentPane().add(btnNewButton_1);
 		
 		hideAndShowPassword = new JLabel("");
-		this.image = new ImageIcon("eyes.png");
+		this.image = new ImageIcon("images/eyes.png");
 		this.hideAndShowPassword = new JLabel("");
 		hideAndShowPassword.setIcon(image);
 		hideAndShowPassword.setToolTipText("Show Password");
