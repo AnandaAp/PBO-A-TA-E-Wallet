@@ -168,68 +168,75 @@ public class Wallet  extends AbstractBorder{
 		String email = txtUsername.getText(),pass = passwordField.getText();
 		int line = 0;
 		BufferedReader fileInput;
-		try {
-			fileInput = new BufferedReader(new FileReader(new File("user.txt")));
-			String line2;
+		File file = new File(File);
+		if(file.exists()) {
 			try {
-				line2 = fileInput.readLine();
-				while(line2 != null) {
-					line+=1;
+				fileInput = new BufferedReader(new FileReader(new File(File)));
+				String line2;
+				try {
 					line2 = fileInput.readLine();
+					while(line2 != null) {
+						line+=1;
+						line2 = fileInput.readLine();
+					}
+					fileInput.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				fileInput.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		String[] words = new String[line];
-		int i =0;
-		BufferedReader fileHasil;
-		try {
-			fileHasil = new BufferedReader(new FileReader(new File("user.txt")));
-			String line2;
-			try {
-				line2 = fileHasil.readLine();
-				while(line2 != null) {
-					words[i] = line2;	
-					i++;
-					line2 = fileHasil.readLine();
-				}
-				fileHasil.close();
-			} catch (IOException e) {
+			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			String[] words = new String[line];
+			int i =0;
+			BufferedReader fileHasil;
+			try {
+				fileHasil = new BufferedReader(new FileReader(new File("user.txt")));
+				String line2;
+				try {
+					line2 = fileHasil.readLine();
+					while(line2 != null) {
+						words[i] = line2;	
+						i++;
+						line2 = fileHasil.readLine();
+					}
+					fileHasil.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			for(int j=1; j < words.length; j+=4) {
+				if(words[j].equals(email) && words[j+1].equals(pass)) {
+					Main.User = email;
+					this.ToHome(x, u);
+					break;
+				}
+				else if(!words[j].equals(email) && !words[j+1].equals(pass) && j+2==words.length) {
+					JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!", "Login", JOptionPane.WARNING_MESSAGE);
+					break;
+				}
+				else if(!words[j].equals(email) && words[j+1].equals(pass) && j+2==words.length) {
+					JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!", "Login", JOptionPane.WARNING_MESSAGE);
+					break;
+				}
+				else if(words[j].equals(email) && !words[j+1].equals(pass) && j+2==words.length) {
+					JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!", "Login", JOptionPane.WARNING_MESSAGE);
+					break;
+				}
+			}
+		}
+		else {
+			JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!","Login",JOptionPane.WARNING_MESSAGE);
 		}
 		
-		for(int j=1; j < words.length; j+=4) {
-			if(words[j].equals(email) && words[j+1].equals(pass)) {
-				Main.User = email;
-				this.ToHome(x, u);
-				break;
-			}
-			else if(!words[j].equals(email) && !words[j+1].equals(pass) && j+2==words.length) {
-				JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!", "Login", JOptionPane.WARNING_MESSAGE);
-				break;
-			}
-			else if(!words[j].equals(email) && words[j+1].equals(pass) && j+2==words.length) {
-				JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!", "Login", JOptionPane.WARNING_MESSAGE);
-				break;
-			}
-			else if(words[j].equals(email) && !words[j+1].equals(pass) && j+2==words.length) {
-				JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!", "Login", JOptionPane.WARNING_MESSAGE);
-				break;
-			}
-		}
 	}
 	public void Clicked(MouseEvent e, JLabel j) {
 		if(!this.check) {
@@ -241,7 +248,7 @@ public class Wallet  extends AbstractBorder{
 		}
 		else {
 			this.passwordField.setEchoChar('•');
-			this.image = new ImageIcon("eyes.png");
+			this.image = new ImageIcon("images/eyes.png");
 			j.setIcon(this.image);
 			j.setToolTipText("Show Text");
 			this.check = false;
