@@ -15,6 +15,8 @@ import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -147,113 +149,118 @@ public class AddBalance {
 		if(!idr.isEmpty()&& usd.isEmpty()) {
 		  
 			double idr1 =Double.parseDouble(idr);
-			idr2.addValue(idr1);
-			File f2 = new File("profile/"+Main.User+".txt");
-			File file = new File("profile/temp.txt");
-		
-//Overwrite file	
+			if(idr1 > 0) {
+				idr2.addValue(idr1);
+				File f2 = new File("profile/"+Main.User+".txt");
+				File file = new File("profile/temp.txt");
 			
-			if(!file.exists()) {
-				try {
-					file.createNewFile();
-					FileWriter Write = new FileWriter(file);
-			
-					Write.write(""+name+"\n"+password+"\n"+ 
+	//Overwrite file	
+				
+				if(!file.exists()) {
+					try {
+						file.createNewFile();
+						FileWriter Write = new FileWriter(file);
+				
+						Write.write(""+name+"\n"+password+"\n"+ 
+								    email + "\n" + brth +
+								    "\n" + address+"\n"+Math.round(idr2.getValue()));
+						Write.close();
+					} 
+					catch (IOException e) {
+						e.printStackTrace();
+					}
+					
+				}
+				
+				else {
+					FileWriter reWrite;
+					try {
+						reWrite = new FileWriter(file,false);
+						reWrite.write(""+name+"\n"+password+"\n"+ 
 							    email + "\n" + brth +
 							    "\n" + address+"\n"+Math.round(idr2.getValue()));
-					Write.close();
-				} 
-				catch (IOException e) {
-					e.printStackTrace();
+						System.out.println("ternyata masuk else");
+						reWrite.close();
+					} 
+					catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}	
+					
 				}
 				
+				if(f2.exists()) {
+					FileWriter reWrite;
+					try {
+						reWrite = new FileWriter(f2,false);
+						reWrite.write(""+name+"\n"+password+"\n"+ 
+							    email + "\n" + brth +
+							    "\n" + address+"\n"+Math.round(idr2.getValue()));
+						System.out.println("ternyata masuk else");
+						reWrite.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+							
+				}
+				//overwrite file end
 			}
-			
 			else {
-				FileWriter reWrite;
-				try {
-					reWrite = new FileWriter(file,false);
-					reWrite.write(""+name+"\n"+password+"\n"+ 
-						    email + "\n" + brth +
-						    "\n" + address+"\n"+Math.round(idr2.getValue()));
-					System.out.println("ternyata masuk else");
-					reWrite.close();
-				} 
-				catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}	
-				
+				JOptionPane.showMessageDialog(frame, "Input yang anda masukan salah","Input Error",JOptionPane.WARNING_MESSAGE);
 			}
-			
-			if(f2.exists()) {
-				FileWriter reWrite;
-				try {
-					reWrite = new FileWriter(f2,false);
-					reWrite.write(""+name+"\n"+password+"\n"+ 
-						    email + "\n" + brth +
-						    "\n" + address+"\n"+Math.round(idr2.getValue()));
-					System.out.println("ternyata masuk else");
-					reWrite.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-						
-		}
-			//overwrite file end
-
-	}	
+		}	
 		//USD check
 		else if(!usd.isEmpty()) {
 			System.out.println("masuk usd");
 			  double usd1 = Double.parseDouble(usd);
-			  System.out.println("objek usd");
-				USD usd2 = new USD(0);
-				System.out.println("objek ada");
+			  if(usd1 > 0) {
+				  System.out.println("objek usd");
+					USD usd2 = new USD(0);
+					System.out.println("objek ada");
 
-			usd2.addValue(usd1);
-			usd2.toIDR();
-			idr2.addValue(usd2.getValue());
-			System.out.println(usd2.getValue());
-			File f3 = new File("profile/"+Main.User+".txt");
-			File file1 = new File("profile/temp.txt");
-		
-		//overwrite file
-			if (file1.exists()){
-				FileWriter reWrite;
-				try {
-					reWrite = new FileWriter(file1,false);
-					reWrite.write(""+name+"\n"+password+"\n"+ 
-						    email + "\n" + brth +
-						    "\n" + address+"\n"+Math.round(idr2.getValue()));
-					System.out.println("ternyata masuk else");
-					reWrite.close();
-					} 
-				catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					}				
-			}
+				usd2.addValue(usd1);
+				usd2.toIDR();
+				idr2.addValue(usd2.getValue());
+				System.out.println(usd2.getValue());
+				File f3 = new File("profile/"+Main.User+".txt");
+				File file1 = new File("profile/temp.txt");
 			
-			if(f3.exists()) {
-				FileWriter reWrite;
-				try {
-					reWrite = new FileWriter(f3,false);
-					reWrite.write(""+name+"\n"+password+"\n"+ 
-						    email + "\n" + brth +
-						    "\n" + address+"\n"+Math.round(idr2.getValue()));
-					System.out.println("ternyata masuk else");
-					reWrite.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			//overwrite file
+				if (file1.exists()){
+					FileWriter reWrite;
+					try {
+						reWrite = new FileWriter(file1,false);
+						reWrite.write(""+name+"\n"+password+"\n"+ 
+							    email + "\n" + brth +
+							    "\n" + address+"\n"+Math.round(idr2.getValue()));
+						System.out.println("ternyata masuk else");
+						reWrite.close();
+						} 
+					catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						}				
 				}
+				
+				if(f3.exists()) {
+					FileWriter reWrite;
+					try {
+						reWrite = new FileWriter(f3,false);
+						reWrite.write(""+name+"\n"+password+"\n"+ 
+							    email + "\n" + brth +
+							    "\n" + address+"\n"+Math.round(idr2.getValue()));
+						System.out.println("ternyata masuk else");
+						reWrite.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			  }//end usd check
 			}
-		
-			
-		} //end usd check
-
-		
-}//?
-}//?
+		else {
+			JOptionPane.showMessageDialog(frame, "Input yang anda masukan salah","Input Error",JOptionPane.WARNING_MESSAGE);
+		}
+	}
+}
