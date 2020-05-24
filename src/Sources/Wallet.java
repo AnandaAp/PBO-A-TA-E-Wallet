@@ -96,7 +96,7 @@ public class Wallet  extends AbstractBorder{
 		frame.getContentPane().add(lblNewLabel);
 		
 		txtUsername = new JTextField();
-		txtUsername.setBorder(new register(Color.black.darker(),2,6,0));
+		txtUsername.setBorder(new Register(Color.black.darker(),2,6,0));
 		txtUsername.setBounds(117, 72, 236, 28);
 		frame.getContentPane().add(txtUsername);
 		txtUsername.setColumns(10);
@@ -108,7 +108,7 @@ public class Wallet  extends AbstractBorder{
 		frame.getContentPane().add(lblPassword);
 		
 		passwordField = new JPasswordField();
-		passwordField.setBorder(new register(Color.black.darker(),2,6,0));
+		passwordField.setBorder(new Register(Color.black.darker(),2,6,0));
 		passwordField.setBounds(117, 121, 236, 28);
 		frame.getContentPane().add(passwordField);
 		
@@ -159,7 +159,7 @@ public class Wallet  extends AbstractBorder{
 		frame.getContentPane().add(hideAndShowPassword);
 	}
 	public void MyButton1ActionPerformed(MouseEvent e,UserWallet u) { 
-		register jfrm1= new register(u);
+		Register jfrm1= new Register(u);
 		jfrm1.frame.setVisible(true);
 		this.frame.setVisible(false);
 		this.frame.setDefaultCloseOperation(this.frame.EXIT_ON_CLOSE);
