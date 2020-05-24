@@ -31,7 +31,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import javax.swing.JEditorPane;
 public class Wallet  extends AbstractBorder{
 	private JLabel hideAndShowPassword;
 	public JFrame frame;
@@ -144,7 +143,7 @@ public class Wallet  extends AbstractBorder{
 		frame.getContentPane().add(regis);
 		this.hideAndShowPassword = new JLabel("New label");
 		
-		this.image = new ImageIcon("eyes.png");
+		this.image = new ImageIcon("images/eyes.png");
 		this.hideAndShowPassword = new JLabel("");
 		hideAndShowPassword.setIcon(image);
 		hideAndShowPassword.setToolTipText("Show Password");
@@ -235,7 +234,7 @@ public class Wallet  extends AbstractBorder{
 	public void Clicked(MouseEvent e, JLabel j) {
 		if(!this.check) {
 			this.passwordField.setEchoChar((char)0);
-			this.image =  new ImageIcon("eyeclosed.png");
+			this.image =  new ImageIcon("images/eyeclosed.png");
 			j.setIcon(this.image);
 			j.setToolTipText("Hide Password");
 			this.check = true;
