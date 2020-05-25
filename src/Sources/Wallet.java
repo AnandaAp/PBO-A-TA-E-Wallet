@@ -78,7 +78,7 @@ public class Wallet  extends AbstractBorder{
 	private void initialize(UserWallet u) {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.WHITE);
-		frame.setBounds(100, 100, 394, 242);
+		frame.setBounds(100, 100, 420, 260);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
