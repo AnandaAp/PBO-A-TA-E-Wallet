@@ -100,7 +100,7 @@ public class UserWallet extends EWallet{
 				FileWriter Write = new FileWriter(file);
 				Write.write(""+this.getNama()+"\n"+this.getPassword()+"\n"+ 
 						    this.getEmail() + "\n" + this.getTanggalLahir() +
-						    "\n" + this.getAlamat()+"\n"+this.getSaldo());
+						    "\n" + this.getAlamat()+"\n"+Math.round(this.getSaldo()));
 				Write.close();
 			} catch (IOException e) {
 				e.printStackTrace();
