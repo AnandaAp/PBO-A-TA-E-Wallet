@@ -131,6 +131,20 @@ public class Profile {
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnNewButton_1.setBounds(335, 227, 89, 23);
 		frame.getContentPane().add(btnNewButton_1);
+		
+		//copyright
+		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnNewButton_1.setBounds(335, 11, 89, 23);
+		frame.getContentPane().add(btnNewButton_1);
+		
+		JLabel lblNewLabel_6 = new JLabel("\u00A9Copyright 2020");
+		lblNewLabel_6.setBounds(323, 236, 101, 14);
+		lblNewLabel_6.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblNewLabel_6.setToolTipText("Author - Rusel Alexander /71180251 - " + 
+				"Y. T. Rinto Pradhana / 71180259 - " + 
+				"Ananda Apriliansah / 71180263 - " + 
+				"Yoga Kurnia Widi Pratama / 71180277");
+		frame.getContentPane().add(lblNewLabel_6);
 	}
 	
 	public void toHome(ActionEvent evt, UserWallet u) {
