@@ -127,6 +127,18 @@ public class Home {
 		JLabel lblNewLabel_2_1 = new JLabel(balance);
 		lblNewLabel_2_1.setBounds(84, 102, 189, 14);
 		frame.getContentPane().add(lblNewLabel_2_1);
+		
+		//History Button
+		JButton btnNewButton_2 = new JButton("History");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		
+		btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnNewButton_2.setBounds(335, 50, 89, 23);
+		frame.getContentPane().add(btnNewButton_2);
 	}
 	
 
