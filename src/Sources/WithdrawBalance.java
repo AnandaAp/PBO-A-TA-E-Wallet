@@ -103,7 +103,7 @@ public class WithdrawBalance extends AbstractBorder{
 		
 		textField = new JTextField();
 		textField.setColumns(10);
-		textField.setBounds(71, 72, 183, 20);
+		textField.setBounds(71, 72, 183, 28);
 		textField.setBorder(new Register(Color.black.darker(),2,6,0));
 		frame.getContentPane().add(textField);
 		
