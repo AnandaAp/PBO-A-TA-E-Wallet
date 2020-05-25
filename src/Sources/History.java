@@ -101,7 +101,7 @@ public class History {
 		Transaksi3.setBounds(10, 116, 414, 14);
 		frame.getContentPane().add(Transaksi3);
 		
-		JLabel Transaksi4 = new JLabel(""+transaksi4);
+		JLabel Transaksi4 = new JLabel(transaksi4);
 		Transaksi4.setBounds(10, 153, 414, 14);
 		frame.getContentPane().add(Transaksi4);
 		
