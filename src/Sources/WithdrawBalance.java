@@ -31,7 +31,6 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.event.ActionEvent;
-import java.util.regex.*;
 public class WithdrawBalance extends AbstractBorder{
 
 	public JFrame frame;
