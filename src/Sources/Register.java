@@ -75,7 +75,7 @@ public class Register extends AbstractBorder{
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setBackground(Color.WHITE);
-		frame.setBounds(100, 100, 625, 452);
+		frame.setBounds(100, 100, 650, 452);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -158,7 +158,7 @@ public class Register extends AbstractBorder{
 		
 		//register button
 		JButton btnNewButton = new JButton("Register");
-		btnNewButton.setBackground(new Color(0, 255, 255));
+		btnNewButton.setBackground(new Color(204, 255, 102));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 					goToUserWaller(fullname, email, passwordField, address, u, arg0,cekPass,lblNewLabel_6_1);
@@ -200,14 +200,14 @@ public class Register extends AbstractBorder{
 	public void Clicked(MouseEvent e, JLabel j) {
 		if(!this.check) {
 			this.passwordField.setEchoChar((char)0);
-			this.image =  new ImageIcon("eyeclosed.png");
+			this.image =  new ImageIcon("images/eyeclosed.png");
 			j.setIcon(this.image);
 			j.setToolTipText("Hide Password");
 			this.check = true;
 		}
 		else {
 			this.passwordField.setEchoChar('•');
-			this.image = new ImageIcon("eyes.png");
+			this.image = new ImageIcon("images/eyes.png");
 			j.setIcon(this.image);
 			j.setToolTipText("Show Text");
 			this.check = false;
