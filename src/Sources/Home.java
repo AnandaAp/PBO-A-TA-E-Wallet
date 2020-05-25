@@ -1,10 +1,6 @@
 package Sources;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
-
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -18,10 +14,6 @@ import java.awt.event.ActionEvent;
 public class Home {
 	
 	public JFrame frame;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JButton btnNewButton;
-	private JButton btnNewButton_1;
 	public String name, email, body, address;
 	public String balance;
 	
