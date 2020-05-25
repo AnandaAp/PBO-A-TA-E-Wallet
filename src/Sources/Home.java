@@ -53,6 +53,7 @@ public class Home {
 					}
 					info = infoinput.readLine();
 				}
+				infoinput.close();
 			}catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -109,7 +110,7 @@ public class Home {
 		frame.getContentPane().add(btnNewButton_1_1);
 		
 		//Info - Name
-		JLabel lblNewLabel_1 = new JLabel("Name");
+		JLabel lblNewLabel_1 = new JLabel("Name : ");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		lblNewLabel_1.setBounds(10, 66, 65, 14);
 		frame.getContentPane().add(lblNewLabel_1);
@@ -119,12 +120,12 @@ public class Home {
 		frame.getContentPane().add(lblNewLabel_2);
 		
 		//Info - Balance
-		JLabel lblNewLabel_1_1 = new JLabel("Balance");
+		JLabel lblNewLabel_1_1 = new JLabel("Balance : ");
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		lblNewLabel_1_1.setBounds(10, 102, 65, 14);
 		frame.getContentPane().add(lblNewLabel_1_1);
 		
-		JLabel lblNewLabel_2_1 = new JLabel(balance);
+		JLabel lblNewLabel_2_1 = new JLabel("Rp."+balance);
 		lblNewLabel_2_1.setBounds(84, 102, 189, 14);
 		frame.getContentPane().add(lblNewLabel_2_1);
 		
@@ -132,7 +133,7 @@ public class Home {
 		JButton btnNewButton_2 = new JButton("History");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				toHistory(e ,u);
 			}
 		});
 		
@@ -159,6 +160,13 @@ public class Home {
 	public void toProfile(ActionEvent evt, UserWallet u) {
 		Profile pro1= new Profile(u);
 		pro1.frame.setVisible(true);
+		this.frame.setVisible(false);
+		this.frame.setDefaultCloseOperation(this.frame.EXIT_ON_CLOSE);
+		this.frame.dispose();
+	}
+	public void toHistory(ActionEvent evt, UserWallet u ) {
+		History h1 = new History(u);
+		h1.frame.setVisible(true);
 		this.frame.setVisible(false);
 		this.frame.setDefaultCloseOperation(this.frame.EXIT_ON_CLOSE);
 		this.frame.dispose();

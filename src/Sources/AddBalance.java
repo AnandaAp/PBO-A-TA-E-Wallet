@@ -125,7 +125,6 @@ public class AddBalance extends AbstractBorder{
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AddBalanceFunction(textField,textField_1);
-				JOptionPane.showMessageDialog(frame, "Transaksi Berhasil", "Input Success", JOptionPane.PLAIN_MESSAGE);
 			}
 
 		});
@@ -156,7 +155,58 @@ public class AddBalance extends AbstractBorder{
 		this.frame.dispose();
 	}
 	
-	//Addbalance
+//History method idr
+	public void createHistoryIDR(String idr) {
+		File history = new File("profile/"+Main.User+"history.txt");
+		if(!history.exists()) {
+			try {
+				history.createNewFile();
+				FileWriter Write = new FileWriter(history);
+				Write.write("Pemasukkan sebesar Rp."+idr+"\n");
+				Write.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		else {
+			try {
+				history.createNewFile();
+				FileWriter Write = new FileWriter(history,true);
+				Write.write("Pemasukkan sebesar Rp."+idr+"\n");
+				Write.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+//History method usd
+	public void createHistoryUSD(String usd) {
+		File history = new File("profile/"+Main.User+"history.txt");
+		if(!history.exists()) {
+			try {
+				history.createNewFile();
+				FileWriter Write = new FileWriter(history);
+				Write.write("Pemasukkan sebesar $"+usd+"\n");
+				Write.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		else {
+			try {
+				history.createNewFile();
+				FileWriter Write = new FileWriter(history,true);
+				Write.write("Pemasukkan sebesar $"+usd+"\n");
+				Write.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
+//Addbalance
 	public void AddBalanceFunction(JTextField textField, JTextField textField_1) {
 		String idr = textField.getText();
 		String usd = textField_1.getText();
@@ -188,17 +238,21 @@ public class AddBalance extends AbstractBorder{
 			}catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
-		
+		System.out.println(balance);
 		Pattern pat = Pattern.compile(numPat);
-		Matcher mat = pat.matcher(balance);
+		Matcher mat = pat.matcher(idr);
+		Matcher matu = pat.matcher(usd);
 		boolean ok = mat.matches();
-		if(ok) {
+		boolean ok2 = matu.matches();
+		if(ok || ok2) {
 			//balance type double 
 			double balance1 = Double.parseDouble(balance);
 			
 			
 			IDR idr2 = new IDR(balance1);
-			//IDR check
+			
+			
+//IDR check
 			if(!idr.isEmpty()&& usd.isEmpty()) {
 			  
 				double idr1 =Double.parseDouble(idr);
@@ -206,9 +260,11 @@ public class AddBalance extends AbstractBorder{
 					idr2.addValue(idr1);
 					File f2 = new File("profile/"+Main.User+".txt");
 					File file = new File("profile/temp.txt");
-				
-		//Overwrite file	
+					File history = new File("profile/"+Main.User+"History.txt");
 					
+					this.createHistoryIDR(idr);
+		
+//Overwrite file	
 					if(!file.exists()) {
 						try {
 							file.createNewFile();
@@ -217,6 +273,7 @@ public class AddBalance extends AbstractBorder{
 							Write.write(""+name+"\n"+password+"\n"+ 
 									    email + "\n" + brth +
 									    "\n" + address+"\n"+Math.round(idr2.getValue()));
+							
 							Write.close();
 						} 
 						catch (IOException e) {
@@ -233,6 +290,7 @@ public class AddBalance extends AbstractBorder{
 								    email + "\n" + brth +
 								    "\n" + address+"\n"+Math.round(idr2.getValue()));
 							System.out.println("ternyata masuk else");
+							
 							reWrite.close();
 						} 
 						catch (IOException e) {
@@ -250,6 +308,7 @@ public class AddBalance extends AbstractBorder{
 								    email + "\n" + brth +
 								    "\n" + address+"\n"+Math.round(idr2.getValue()));
 							System.out.println("ternyata masuk else");
+							JOptionPane.showMessageDialog(frame, "Transaksi Berhasil", "Input Success", JOptionPane.PLAIN_MESSAGE);
 							reWrite.close();
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
@@ -257,21 +316,21 @@ public class AddBalance extends AbstractBorder{
 						}
 								
 					}
-					//overwrite file end
+//overwrite file end
 				}
 				else {
 					JOptionPane.showMessageDialog(frame, "Input yang anda masukan salah","Input Error",JOptionPane.WARNING_MESSAGE);
 				}
 			}	
-			//USD check
-			else if(!usd.isEmpty()) {
+//USD check
+			else if(!usd.isEmpty() && idr.isEmpty()) {
 				System.out.println("masuk usd");
 				  double usd1 = Double.parseDouble(usd);
 				  if(usd1 > 0) {
 					  System.out.println("objek usd");
 						USD usd2 = new USD(0);
 						System.out.println("objek ada");
-
+					this.createHistoryUSD(usd);
 					usd2.addValue(usd1);
 					usd2.toIDR();
 					idr2.addValue(usd2.getValue());
@@ -304,19 +363,26 @@ public class AddBalance extends AbstractBorder{
 								    email + "\n" + brth +
 								    "\n" + address+"\n"+Math.round(idr2.getValue()));
 							System.out.println("ternyata masuk else");
+							JOptionPane.showMessageDialog(frame, "Transaksi Berhasil", "Input Success", JOptionPane.PLAIN_MESSAGE);
 							reWrite.close();
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
-				  }//end usd check
-				}		
+				  }
+				  
+				}//end usd check	
+			else{
+				JOptionPane.showMessageDialog(frame, "Maaf anda hanya dapat memasukkan satu currency saja ","Input Error",JOptionPane.WARNING_MESSAGE);
+			}		
 		}
+			
 		else {
 			JOptionPane.showMessageDialog(frame, "Input yang anda masukan salah","Input Error",JOptionPane.WARNING_MESSAGE);
 		}
-	}
+		
+	}//end method
 	
 	@Override
 	public Insets getBorderInsets(Component c) {

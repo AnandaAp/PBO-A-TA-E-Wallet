@@ -1,4 +1,5 @@
 package Sources;
+import java.awt.Cursor;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -62,13 +63,13 @@ public class Profile {
 		frame.getContentPane().setLayout(null);
 		
 		//title
-		JLabel lblNewLabel = new JLabel("Profile");
+		JLabel lblNewLabel = new JLabel("Profile : ");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblNewLabel.setBounds(10, 11, 72, 25);
 		frame.getContentPane().add(lblNewLabel);
 		
 		//print name
-		JLabel lblNewLabel_1 = new JLabel("Name");
+		JLabel lblNewLabel_1 = new JLabel("Name : ");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		lblNewLabel_1.setBounds(10, 47, 72, 14);
 		frame.getContentPane().add(lblNewLabel_1);
@@ -78,7 +79,7 @@ public class Profile {
 		frame.getContentPane().add(lblNewLabel_5);
 		
 		//print email
-		JLabel lblNewLabel_2 = new JLabel("E-mail");
+		JLabel lblNewLabel_2 = new JLabel("E-mail : ");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		lblNewLabel_2.setBounds(10, 78, 72, 14);
 		frame.getContentPane().add(lblNewLabel_2);
@@ -88,7 +89,7 @@ public class Profile {
 		frame.getContentPane().add(lblNewLabel_5_1);
 		
 		//print birthday
-		JLabel lblNewLabel_3 = new JLabel("Date of Birth");
+		JLabel lblNewLabel_3 = new JLabel("Date of Birth : ");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		lblNewLabel_3.setBounds(10, 114, 72, 14);
 		frame.getContentPane().add(lblNewLabel_3);
@@ -98,7 +99,7 @@ public class Profile {
 		frame.getContentPane().add(lblNewLabel_5_2);
 		
 		//print address
-		JLabel lblNewLabel_4 = new JLabel("Address");
+		JLabel lblNewLabel_4 = new JLabel("Address : ");
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		lblNewLabel_4.setBounds(10, 149, 72, 14);
 		frame.getContentPane().add(lblNewLabel_4);
@@ -111,7 +112,7 @@ public class Profile {
 		JButton btnNewButton = new JButton("Back");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				toHome(e,u);
 			}
 		});
 		
@@ -124,7 +125,7 @@ public class Profile {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Main.User="";
-				toHome(e, u);
+				logOut(e, u);
 			}
 		});
 		
@@ -147,8 +148,15 @@ public class Profile {
 		frame.getContentPane().add(lblNewLabel_6);
 	}
 	
-	public void toHome(ActionEvent evt, UserWallet u) {
+	public void logOut(ActionEvent evt, UserWallet u) {
 		Wallet pro1= new Wallet(u);
+		pro1.frame.setVisible(true);
+		this.frame.setVisible(false);
+		this.frame.setDefaultCloseOperation(this.frame.EXIT_ON_CLOSE);
+		this.frame.dispose();
+	}
+	public void toHome(ActionEvent evt, UserWallet u) {
+		Home pro1= new Home(u);
 		pro1.frame.setVisible(true);
 		this.frame.setVisible(false);
 		this.frame.setDefaultCloseOperation(this.frame.EXIT_ON_CLOSE);

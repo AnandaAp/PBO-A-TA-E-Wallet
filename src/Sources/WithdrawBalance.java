@@ -112,7 +112,6 @@ public class WithdrawBalance extends AbstractBorder{
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				WithdrawFunction(textField);
-				JOptionPane.showMessageDialog(frame, "Transaksi Berhasil", "Input Success", JOptionPane.PLAIN_MESSAGE);
 			}
 		});
 		
@@ -139,6 +138,31 @@ public class WithdrawBalance extends AbstractBorder{
 		this.frame.setDefaultCloseOperation(this.frame.EXIT_ON_CLOSE);
 		this.frame.dispose();
 	}
+//create Withdraw History
+	public void createHistoryWithdraw(String value) {
+		File history = new File("profile/"+Main.User+"history.txt");
+		if(!history.exists()) {
+			try {
+				history.createNewFile();
+				FileWriter Write = new FileWriter(history);
+				Write.write("Pengeluaran sebesar Rp."+value+"\n");
+				Write.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		else {
+			try {
+				history.createNewFile();
+				FileWriter Write = new FileWriter(history,true);
+				Write.write("Pengeluaran sebesar Rp."+value+"\n");
+				Write.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+//Withdraw Function
 	public void WithdrawFunction(JTextField textField) {
 		String value = textField.getText();
 		String info = "";
@@ -171,20 +195,21 @@ public class WithdrawBalance extends AbstractBorder{
 			}
 		
 		Pattern pat = Pattern.compile(numPat);
-		Matcher mat = pat.matcher(balance);
+		Matcher mat = pat.matcher(value);
 		boolean ok = mat.matches();
+		System.out.println(value);
 		if(ok) {
-		//value type double 
+//value type double 
 		double value1 = Double.parseDouble(value);
 		double balance1 = Double.parseDouble(balance);
-		//IDR check
+//IDR check
 		if(!value.isEmpty()) {
 			if(value1 <= balance1 && value1 >0) {
 				double saldo = balance1 - value1;
 				File f2 = new File("profile/"+Main.User+".txt");
 				File file = new File("profile/temp.txt");
-			
-	//Overwrite file	
+			this.createHistoryWithdraw(value);
+//Overwrite file	
 				
 				if(!file.exists()) {
 					try {
@@ -210,6 +235,7 @@ public class WithdrawBalance extends AbstractBorder{
 							    email + "\n" + brth +
 							    "\n" + address+"\n"+Math.round(saldo));
 						System.out.println("ternyata masuk else");
+						
 						reWrite.close();
 					} 
 					catch (IOException e) {
@@ -227,6 +253,7 @@ public class WithdrawBalance extends AbstractBorder{
 							    email + "\n" + brth +
 							    "\n" + address+"\n"+Math.round(saldo));
 						System.out.println("ternyata masuk else");
+						JOptionPane.showMessageDialog(frame, "Transaksi Berhasil", "Input Success", JOptionPane.PLAIN_MESSAGE);
 						reWrite.close();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
@@ -236,10 +263,13 @@ public class WithdrawBalance extends AbstractBorder{
 			}
 				//overwrite file end
 			}
+			else {
+				JOptionPane.showMessageDialog(frame, "Input tidak boleh melebihi jumlah saldo","Input Error",JOptionPane.WARNING_MESSAGE);
+			}
 		}
 		}
 		else {
-			JOptionPane.showMessageDialog(frame, "Input yang anda masukan salah","Input Error",JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(frame, "Input yang anda masukkan salah","Input Error",JOptionPane.WARNING_MESSAGE);
 		}
 	}
 	
