@@ -2,10 +2,7 @@ package Sources;
 
 public class IDR extends Currency{
 	private double value = 0;
-	public IDR() {
-	}
 	public IDR(double value) {
-		super(value);
 		this.value = value;
 	}
 	
@@ -24,6 +21,9 @@ public class IDR extends Currency{
 	@Override
 	public void toIDR() {
 		this.setValue(this.value);
+	}
+	public void withdrawValue(double value) {
+		this.value = this.getValue() - value;
 	}
 	
 

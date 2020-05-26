@@ -31,7 +31,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.awt.Toolkit;
+import java.awt.Dialog.ModalExclusionType;
 public class Wallet  extends AbstractBorder{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JLabel hideAndShowPassword;
 	public JFrame frame;
 	private JTextField txtUsername;
@@ -77,7 +83,10 @@ public class Wallet  extends AbstractBorder{
 
 	private void initialize(UserWallet u) {
 		frame = new JFrame();
-		frame.getContentPane().setBackground(Color.WHITE);
+		frame.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/wallet.png"));
+		frame.setTitle("E-Wallet");
+		frame.getContentPane().setBackground(new Color(234, 240, 248));
 		frame.setBounds(100, 100, 420, 260);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -161,10 +170,10 @@ public class Wallet  extends AbstractBorder{
 		Register jfrm1= new Register(u);
 		jfrm1.frame.setVisible(true);
 		this.frame.setVisible(false);
-		this.frame.setDefaultCloseOperation(this.frame.EXIT_ON_CLOSE);
 		this.frame.dispose();
 	}
 	public void readArray (String File, JTextField txtUsername, JPasswordField passwordField, ActionEvent x, UserWallet u) {
+		@SuppressWarnings("deprecation")
 		String email = txtUsername.getText(),pass = passwordField.getText();
 		int line = 0;
 		BufferedReader fileInput;
@@ -181,11 +190,11 @@ public class Wallet  extends AbstractBorder{
 					}
 					fileInput.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					System.out.println(e.getMessage());
 					e.printStackTrace();
 				}
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
 				e.printStackTrace();
 			}
 			
@@ -204,12 +213,12 @@ public class Wallet  extends AbstractBorder{
 					}
 					fileHasil.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					System.out.println(e.getMessage());
 					e.printStackTrace();
 				}
 				
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
 				e.printStackTrace();
 			}
 			
@@ -220,21 +229,25 @@ public class Wallet  extends AbstractBorder{
 					break;
 				}
 				else if(!words[j].equals(email) && !words[j+1].equals(pass) && j+2==words.length) {
-					JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!", "Login", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!",
+							"Login", JOptionPane.WARNING_MESSAGE, new ImageIcon("images/Lock.png"));
 					break;
 				}
 				else if(!words[j].equals(email) && words[j+1].equals(pass) && j+2==words.length) {
-					JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!", "Login", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!",
+							"Login", JOptionPane.WARNING_MESSAGE, new ImageIcon("images/Lock.png"));
 					break;
 				}
 				else if(words[j].equals(email) && !words[j+1].equals(pass) && j+2==words.length) {
-					JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!", "Login", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!",
+							"Login", JOptionPane.WARNING_MESSAGE, new ImageIcon("images/Lock.png"));
 					break;
 				}
 			}
 		}
 		else {
-			JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!","Login",JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!","Login"
+					,JOptionPane.WARNING_MESSAGE, new ImageIcon("images/Lock.png"));
 		}
 		
 	}
@@ -258,7 +271,6 @@ public class Wallet  extends AbstractBorder{
 		Home jfrm1= new Home(u); 
 		jfrm1.frame.setVisible(true);
 		this.frame.setVisible(false);
-		this.frame.setDefaultCloseOperation(this.frame.EXIT_ON_CLOSE);
 		this.frame.dispose();
 	}
 	@Override

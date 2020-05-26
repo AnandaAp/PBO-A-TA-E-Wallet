@@ -19,30 +19,31 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.*;
 import java.awt.geom.*;
-import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 public class Register extends AbstractBorder{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public JFrame frame;
-	private JTextField fullname;
-	private JTextField email;
-	private JTextField birth;
-	private JTextField address;
+	private JTextField fullname,email,birth,address;
 	public static boolean cek = false;
-	public String strRegEx = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}:;'/?>.<,¡™£¢§¶•ªº–≠“‘«æ…ÚÆ¯˘¿Â˜ı◊])(?=\\S+$).{8,}$";
-	public String emailPattern = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
-	public String dateRegEx = "([1-9]|[12][0-9]|[3][01]) (Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember|januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember) \\d{4}";
+	public String strRegEx = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])"
+			+ "(?=.*[!@#$%^&*()_+{}:;'/?>.<,¡™£¢§¶•ªº–≠“‘«æ…ÚÆ¯˘¿Â˜ı◊])(?=\\S+$).{8,}$";
+	public String emailPattern = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)"
+			+ "*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+	public String dateRegEx = "([1-9]|[12][0-9]|[3][01]) "
+			+ "(Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember|"
+			+ "januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember) \\d{4}";
 	private boolean check = false;
 	private JLabel hideAndShowPassword;
 	private JPasswordField passwordField; 
 	private ImageIcon image;
 	private Color color;
-    private int thickness = 4;
-    private int radii = 8;
-    private int pointerSize = 7;
+    private int thickness = 4,radii = 8,pointerSize = 7;
     private Insets insets = null;
     private BasicStroke stroke = null;
-    private int strokePad;
-    private int pointerPad = 4;
+    private int strokePad,pointerPad = 4;
     RenderingHints hints;
     /**
 	 * @wbp.parser.constructor
@@ -73,8 +74,9 @@ public class Register extends AbstractBorder{
 		}
 	private void initialize(UserWallet u) {
 		frame = new JFrame();
-		frame.getContentPane().setBackground(Color.WHITE);
-		frame.setBackground(Color.WHITE);
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/wallet.png"));
+		frame.setTitle("E-Wallet");
+		frame.getContentPane().setBackground(new Color(234, 240, 248));
 		frame.setBounds(100, 100, 650, 452);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -120,6 +122,7 @@ public class Register extends AbstractBorder{
 		passwordField.setEchoChar('•');
 		passwordField.setBounds(132, 189, 454, 28);
 		frame.getContentPane().add(passwordField);
+		@SuppressWarnings("deprecation")
 		String cekPass = passwordField.getText();
 		//password warning
 		JLabel lblNewLabel_6_1 = new JLabel("password harus: minimal 8 karakter, 1 huruf kecil, 1 huruf besar, 1 angka, dan 1 simbol(!@#$%^&*)");
@@ -217,10 +220,10 @@ public class Register extends AbstractBorder{
 		Wallet w = new Wallet(u);
 		w.frame.setVisible(true);
 		this.frame.setVisible(false);
-		this.frame.setDefaultCloseOperation(this.frame.EXIT_ON_CLOSE);
 		this.frame.dispose();
 	}
 	public void goToUserWaller(JTextField fullname,JTextField email,JPasswordField passwordField,JTextField address,UserWallet u, ActionEvent arg0,String cekPass,JLabel lblNewLabel_6_1) {
+		@SuppressWarnings("deprecation")
 		String nama = fullname.getText(),Email = email.getText(), 
 				   password = passwordField.getText(),alamat = address.getText(),
 				   tanggalLahir = birth.getText();
@@ -234,30 +237,30 @@ public class Register extends AbstractBorder{
 				boolean mat = match.matches(),emMat = matchEm.matches(), dateMat = matchDate.matches();
 				
 				
+				if(!emMat) {
+					JOptionPane.showMessageDialog(frame, "Format Email Salah","Email Error Message",JOptionPane.WARNING_MESSAGE,new ImageIcon("images/Mail.png"));
+				}
 				if(!mat) {
-					JOptionPane.showMessageDialog(frame, "Password tidak sesuai kriteria","Password Error Message",JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(frame, "Password tidak sesuai kriteria","Password Error Message",JOptionPane.WARNING_MESSAGE,new ImageIcon("images/Lock.png"));
 				}
-				else if(!emMat) {
-					JOptionPane.showMessageDialog(frame, "Format Email Salah","Email Error Message",JOptionPane.WARNING_MESSAGE);
-				}
-				else if(!dateMat) {
-					JOptionPane.showMessageDialog(frame, "Format tanggal lahir Salah","Email Error Message",JOptionPane.WARNING_MESSAGE);
+				if(!dateMat) {
+					JOptionPane.showMessageDialog(frame, "Format tanggal lahir Salah","Email Error Message",JOptionPane.WARNING_MESSAGE,new ImageIcon("images/Calender.png"));
 				}
 				else {
 					cek = u.Register(nama, tanggalLahir, password, Email, alamat,cek);
 					if(cek == true) {
-						JOptionPane.showMessageDialog(frame, "Email sudah pernah digunakan","Register",JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(frame, "Email sudah pernah digunakan","Register",JOptionPane.WARNING_MESSAGE,new ImageIcon("images/Mail.png"));
 					}
 					else {
 						JOptionPane.showMessageDialog(frame, "Register berhasil, Selamat datang " + nama,
-								  "Register",JOptionPane.PLAIN_MESSAGE);
+								  "Register",JOptionPane.PLAIN_MESSAGE,new ImageIcon("images/Register.png"));
 						backToLogin(arg0, u);
 					}
 				}
 			}
 			else {
 				JOptionPane.showMessageDialog(frame, "Data tidak boleh ada yang kosong!!!",
-						  					  "Register",JOptionPane.WARNING_MESSAGE);
+						  					  "Register",JOptionPane.WARNING_MESSAGE,new ImageIcon("images/attention.png"));
 			}	
 	}
 	@Override

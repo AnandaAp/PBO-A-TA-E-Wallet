@@ -2,17 +2,13 @@ package Sources;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.EventQueue;
+import java.awt.Cursor;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Paths;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,9 +31,10 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.event.ActionEvent;
-import java.util.regex.*;
+import java.awt.Toolkit;
 public class AddBalance extends AbstractBorder{
 
+	private static final long serialVersionUID = 1L;
 	public JFrame frame;
 	private JTextField textField;
 	private JTextField textField_1;
@@ -54,6 +51,7 @@ public class AddBalance extends AbstractBorder{
     private int pointerPad = 4;
     RenderingHints hints;
     private String numPat = "\\d+";
+    private JLabel lblNewLabel_3;
     
     /**
 	 * @wbp.parser.constructor
@@ -88,40 +86,43 @@ public class AddBalance extends AbstractBorder{
 	 */
 	private void initialize(UserWallet u) {
 		frame = new JFrame();
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/wallet.png"));
+		frame.setTitle("E-Wallet");
 		frame.setBounds(100, 100, 450, 250);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+		frame.getContentPane().setBackground(new Color(234, 240, 248));
 		//title
 		JLabel lblNewLabel = new JLabel("Add Balance");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel.setBounds(147, 11, 146, 25);
+		lblNewLabel.setBounds(155, 11, 131, 25);
 		frame.getContentPane().add(lblNewLabel);
 		
 		//add idr
 		JLabel lblNewLabel_1 = new JLabel("IDR");
-		lblNewLabel_1.setBounds(99, 65, 46, 14);
+		lblNewLabel_1.setBounds(112, 71, 27, 14);
 		frame.getContentPane().add(lblNewLabel_1);
 		
 		textField = new JTextField();
-		textField.setBounds(24, 90, 180, 28);
+		textField.setBounds(34, 89, 180, 28);
 		textField.setBorder(new Register(Color.black.darker(),2,6,0));
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 		
 		//add usd
 		JLabel lblNewLabel_2 = new JLabel("USD");
-		lblNewLabel_2.setBounds(300, 65, 46, 14);
+		lblNewLabel_2.setBounds(317, 71, 32, 14);
 		frame.getContentPane().add(lblNewLabel_2);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(226, 90, 180, 28);
+		textField_1.setBounds(236, 89, 180, 28);
 		textField_1.setBorder(new Register(Color.black.darker(),2,6,0));
 		frame.getContentPane().add(textField_1);
 		textField_1.setColumns(10);
 		
 		//confirm button
 		btnNewButton = new JButton("Confrim");
+		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AddBalanceFunction(textField,textField_1);
@@ -130,11 +131,12 @@ public class AddBalance extends AbstractBorder{
 		});
 		
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNewButton.setBounds(226, 159, 89, 23);
+		btnNewButton.setBounds(230, 158, 89, 23);
 		frame.getContentPane().add(btnNewButton);
 		
 		//back button
-		btnNewButton_1 = new JButton("Back");
+		btnNewButton_1 = new JButton("Cancel");
+		btnNewButton_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				toHome(e, u);
@@ -142,8 +144,23 @@ public class AddBalance extends AbstractBorder{
 		});
 		
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNewButton_1.setBounds(115, 159, 89, 23);
+		btnNewButton_1.setBounds(132, 158, 89, 23);
 		frame.getContentPane().add(btnNewButton_1);
+		
+		lblNewLabel_3 = new JLabel("Anda Hanya Dapat Memasukan Salah Satu Currency");
+		lblNewLabel_3.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
+		lblNewLabel_3.setForeground(Color.RED);
+		lblNewLabel_3.setBounds(90, 130, 283, 16);
+		frame.getContentPane().add(lblNewLabel_3);
+		//Copyrigth
+		JLabel copyRight = new JLabel("\u00A9Copyright 2020");
+		copyRight.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		copyRight.setBounds(182, 206, 89, 14);
+		copyRight.setToolTipText("Author - Rusel Alexander /71180251 - " + 
+				"Y. T. Rinto Pradhana / 71180259 - " + 
+				"Ananda Apriliansah / 71180263 - " + 
+				"Yoga Kurnia Widi Pratama / 71180277");
+		frame.getContentPane().add(copyRight);
 	}
 	
 	//back home
@@ -151,7 +168,6 @@ public class AddBalance extends AbstractBorder{
 		Home pro1 = new Home(u);
 		pro1.frame.setVisible(true);
 		this.frame.setVisible(false);
-		this.frame.setDefaultCloseOperation(this.frame.EXIT_ON_CLOSE);
 		this.frame.dispose();
 	}
 	
@@ -260,7 +276,6 @@ public class AddBalance extends AbstractBorder{
 					idr2.addValue(idr1);
 					File f2 = new File("profile/"+Main.User+".txt");
 					File file = new File("profile/temp.txt");
-					File history = new File("profile/"+Main.User+"History.txt");
 					
 					this.createHistoryIDR(idr);
 		
@@ -294,7 +309,7 @@ public class AddBalance extends AbstractBorder{
 							reWrite.close();
 						} 
 						catch (IOException e) {
-							// TODO Auto-generated catch block
+							System.out.println(e.getMessage());
 							e.printStackTrace();
 						}	
 						
@@ -328,7 +343,7 @@ public class AddBalance extends AbstractBorder{
 				  double usd1 = Double.parseDouble(usd);
 				  if(usd1 > 0) {
 					  System.out.println("objek usd");
-						USD usd2 = new USD(0);
+						USD usd2 = new USD();
 						System.out.println("objek ada");
 					this.createHistoryUSD(usd);
 					usd2.addValue(usd1);
@@ -350,7 +365,6 @@ public class AddBalance extends AbstractBorder{
 							reWrite.close();
 							} 
 						catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 							}				
 					}
@@ -366,7 +380,6 @@ public class AddBalance extends AbstractBorder{
 							JOptionPane.showMessageDialog(frame, "Transaksi Berhasil", "Input Success", JOptionPane.PLAIN_MESSAGE);
 							reWrite.close();
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}

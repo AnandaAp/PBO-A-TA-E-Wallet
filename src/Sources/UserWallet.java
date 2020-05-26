@@ -1,16 +1,7 @@
 package Sources;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
-import java.util.*;
-
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+
 public class UserWallet extends EWallet{
 	public JFrame frame;
 	private String nama;
@@ -60,6 +51,7 @@ public class UserWallet extends EWallet{
 				System.out.println("memulai try");
 				this.setPassword(password);
 				this.setEmail(email);
+				@SuppressWarnings("resource")
 				BufferedReader fileInput = new BufferedReader(new FileReader(new File("user.txt")));
 				line = fileInput.readLine();
 				System.out.println("masuk ke pengecekan isi file");

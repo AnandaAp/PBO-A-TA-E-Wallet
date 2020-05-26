@@ -1,22 +1,29 @@
 package Sources;
+import java.awt.Color;
 import java.awt.Cursor;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import java.awt.Toolkit;
 
 public class Profile {
 
 	public JFrame frame;
 	public String nam, eml, bdy, ads;
-
+	public ImageIcon icon;
+	private BufferedReader infoInput;
 	public Profile(UserWallet u) {
 		initialize(u);
 	}
@@ -25,9 +32,9 @@ public class Profile {
 		String info = "";
 		int lihat = 0;
 		try {
-			BufferedReader infoinput = new BufferedReader(new FileReader(new File("profile/"+Main.User+".txt")));
+			this.infoInput= new BufferedReader(new FileReader(new File("profile/"+Main.User+".txt")));
 			try {
-				info = infoinput.readLine();
+				info = infoInput.readLine();
 				while(info != null) {
 					lihat += 1;
 					switch(lihat) {
@@ -38,7 +45,7 @@ public class Profile {
 						case 5 : ads = info; break;
 						default : break;
 					}
-					info = infoinput.readLine();
+					info = infoInput.readLine();
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -56,109 +63,119 @@ public class Profile {
 		
 		
 		frame = new JFrame();
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/wallet.png"));
+		frame.setTitle("E-Wallet");
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.getContentPane().setBackground(new Color(234, 240, 248));
 		
 		//title
-		JLabel lblNewLabel = new JLabel("Profile : ");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel.setBounds(10, 11, 72, 25);
-		frame.getContentPane().add(lblNewLabel);
+		JLabel profile = new JLabel("Profile");
+		profile.setFont(new Font("Tahoma", Font.BOLD, 20));
+		profile.setBounds(180, 5, 76, 25);
+		frame.getContentPane().add(profile);
 		
 		//print name
-		JLabel lblNewLabel_1 = new JLabel("Name : ");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		lblNewLabel_1.setBounds(10, 47, 72, 14);
-		frame.getContentPane().add(lblNewLabel_1);
+		JLabel name = new JLabel("Name : ");
+		name.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		name.setBounds(30, 47, 72, 14);
+		frame.getContentPane().add(name);
 
-		JLabel lblNewLabel_5 = new JLabel(nam);
-		lblNewLabel_5.setBounds(104, 47, 302, 14);
-		frame.getContentPane().add(lblNewLabel_5);
+		JLabel nameValue = new JLabel(nam);
+		nameValue.setBounds(124, 47, 302, 14);
+		frame.getContentPane().add(nameValue);
 		
 		//print email
-		JLabel lblNewLabel_2 = new JLabel("E-mail : ");
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		lblNewLabel_2.setBounds(10, 78, 72, 14);
-		frame.getContentPane().add(lblNewLabel_2);
+		JLabel email = new JLabel("E-mail : ");
+		email.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		email.setBounds(30, 78, 72, 14);
+		frame.getContentPane().add(email);
 
-		JLabel lblNewLabel_5_1 = new JLabel(eml);
-		lblNewLabel_5_1.setBounds(104, 78, 302, 14);
-		frame.getContentPane().add(lblNewLabel_5_1);
+		JLabel emailValue = new JLabel(eml);
+		emailValue.setBounds(124, 78, 302, 14);
+		frame.getContentPane().add(emailValue);
 		
 		//print birthday
-		JLabel lblNewLabel_3 = new JLabel("Date of Birth : ");
-		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		lblNewLabel_3.setBounds(10, 114, 72, 14);
-		frame.getContentPane().add(lblNewLabel_3);
+		JLabel birth = new JLabel("Date of Birth : ");
+		birth.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		birth.setBounds(30, 114, 72, 14);
+		frame.getContentPane().add(birth);
 		
-		JLabel lblNewLabel_5_2 = new JLabel(bdy);
-		lblNewLabel_5_2.setBounds(104, 114, 302, 14);
-		frame.getContentPane().add(lblNewLabel_5_2);
+		JLabel birthValue = new JLabel(bdy);
+		birthValue.setBounds(124, 114, 302, 14);
+		frame.getContentPane().add(birthValue);
 		
 		//print address
-		JLabel lblNewLabel_4 = new JLabel("Address : ");
-		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		lblNewLabel_4.setBounds(10, 149, 72, 14);
-		frame.getContentPane().add(lblNewLabel_4);
+		JLabel address = new JLabel("Address : ");
+		address.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		address.setBounds(30, 149, 72, 14);
+		frame.getContentPane().add(address);
 		
-		JLabel lblNewLabel_5_3 = new JLabel(ads);
-		lblNewLabel_5_3.setBounds(104, 149, 302, 14);
-		frame.getContentPane().add(lblNewLabel_5_3);
+		JLabel addressValue = new JLabel(ads);
+		addressValue.setBounds(124, 149, 302, 14);
+		frame.getContentPane().add(addressValue);
 		
 		//back button
-		JButton btnNewButton = new JButton("Back");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				toHome(e,u);
+		this.icon = new ImageIcon("images/Back.png");
+		JLabel back = new JLabel("");
+		back.setIcon(new ImageIcon("images/Back.png"));
+		back.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				toHome(e, u);
 			}
 		});
+		back.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNewButton.setBounds(10, 227, 89, 23);
-		frame.getContentPane().add(btnNewButton);
+		back.setFont(new Font("Tahoma", Font.BOLD, 11));
+		back.setBounds(6, 5, 37, 25);
+		frame.getContentPane().add(back);
 		
-		//logout button
-		JButton btnNewButton_1 = new JButton("Logout");
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Main.User="";
-				logOut(e, u);
-			}
-		});
-		
-		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNewButton_1.setBounds(335, 227, 89, 23);
-		frame.getContentPane().add(btnNewButton_1);
-		
-		//copyright
-		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNewButton_1.setBounds(335, 11, 89, 23);
-		frame.getContentPane().add(btnNewButton_1);
-		
-		JLabel lblNewLabel_6 = new JLabel("\u00A9Copyright 2020");
-		lblNewLabel_6.setBounds(323, 236, 101, 14);
-		lblNewLabel_6.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lblNewLabel_6.setToolTipText("Author - Rusel Alexander /71180251 - " + 
+		JLabel copyRight = new JLabel("\u00A9Copyright 2020");
+		copyRight.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		copyRight.setBounds(171, 253, 89, 14);
+		copyRight.setToolTipText("Author - Rusel Alexander /71180251 - " + 
 				"Y. T. Rinto Pradhana / 71180259 - " + 
 				"Ananda Apriliansah / 71180263 - " + 
 				"Yoga Kurnia Widi Pratama / 71180277");
-		frame.getContentPane().add(lblNewLabel_6);
+		frame.getContentPane().add(copyRight);
+		
+		JButton logOut = new JButton("Log Out");
+		logOut.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				logOut(e, u);
+			}
+		});
+		logOut.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		logOut.setBounds(152, 212, 117, 29);
+		frame.getContentPane().add(logOut);
 	}
 	
-	public void logOut(ActionEvent evt, UserWallet u) {
-		Wallet pro1= new Wallet(u);
-		pro1.frame.setVisible(true);
-		this.frame.setVisible(false);
-		this.frame.setDefaultCloseOperation(this.frame.EXIT_ON_CLOSE);
-		this.frame.dispose();
+	public void logOut(MouseEvent e, UserWallet u) {
+		int keluar = JOptionPane.showConfirmDialog(frame, "Apakah Anda Benar ingin keluar?","Log Out",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE,new ImageIcon("images/Exit.png"));
+		switch (keluar) {
+			case 0: 
+				Wallet pro1= new Wallet(u);
+				pro1.frame.setVisible(true);
+				this.frame.setVisible(false);
+				this.frame.dispose();
+				Main.User = "";
+				;
+				break;
+			case 1:
+				break;
+					
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + keluar);
+			}
+		
 	}
-	public void toHome(ActionEvent evt, UserWallet u) {
+	public void toHome(MouseEvent e, UserWallet u) {
 		Home pro1= new Home(u);
 		pro1.frame.setVisible(true);
 		this.frame.setVisible(false);
-		this.frame.setDefaultCloseOperation(this.frame.EXIT_ON_CLOSE);
 		this.frame.dispose();
 	}
-
 }

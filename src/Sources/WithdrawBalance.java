@@ -2,7 +2,7 @@ package Sources;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
-
+import java.awt.Cursor;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,8 +31,11 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
 public class WithdrawBalance extends AbstractBorder{
 
+	
+	private static final long serialVersionUID = 1L;
 	public JFrame frame;
 	private JTextField textField;
 	public String name,password, email, brth, address, balance;
@@ -75,34 +78,35 @@ public class WithdrawBalance extends AbstractBorder{
 		    insets = new Insets(pad,pad,bottomPad,pad);
 		}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize(UserWallet u) {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 350, 200);
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/wallet.png"));
+		frame.setTitle("E-Wallet");
+		frame.setBounds(100, 100, 350, 215);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.getContentPane().setBackground(new Color(234, 240, 248));
 		
 		//title
 		JLabel lblNewLabel = new JLabel("Withdraw Balance");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel.setBounds(71, 11, 202, 25);
+		lblNewLabel.setBounds(88, 19, 189, 25);
 		frame.getContentPane().add(lblNewLabel);
 		
 		//withdraw
 		JLabel lblNewLabel_1 = new JLabel("IDR");
-		lblNewLabel_1.setBounds(150, 47, 46, 14);
+		lblNewLabel_1.setBounds(170, 54, 27, 14);
 		frame.getContentPane().add(lblNewLabel_1);
 		
 		textField = new JTextField();
 		textField.setColumns(10);
-		textField.setBounds(71, 72, 183, 28);
+		textField.setBounds(88, 72, 183, 28);
 		textField.setBorder(new Register(Color.black.darker(),2,6,0));
 		frame.getContentPane().add(textField);
 		
 		//confirm button
 		JButton btnNewButton = new JButton("Confirm");
+		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				WithdrawFunction(textField);
@@ -110,11 +114,14 @@ public class WithdrawBalance extends AbstractBorder{
 		});
 		
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNewButton.setBounds(165, 114, 89, 23);
+		btnNewButton.setBounds(188, 109, 89, 23);
 		frame.getContentPane().add(btnNewButton);
 		
 		//back button
-		JButton btnNewButton_1 = new JButton("Back");
+		JButton btnNewButton_1 = new JButton("Cancel");
+		btnNewButton_1.setForeground(Color.WHITE);
+		btnNewButton_1.setBackground(Color.RED);
+		btnNewButton_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				toHome(e, u);
@@ -122,14 +129,21 @@ public class WithdrawBalance extends AbstractBorder{
 		});
 		
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNewButton_1.setBounds(71, 114, 89, 23);
+		btnNewButton_1.setBounds(81, 109, 89, 23);
 		frame.getContentPane().add(btnNewButton_1);
+		JLabel copyRight = new JLabel("\u00A9Copyright 2020");
+		copyRight.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		copyRight.setBounds(138, 172, 89, 14);
+		copyRight.setToolTipText("Author - Rusel Alexander /71180251 - " + 
+				"Y. T. Rinto Pradhana / 71180259 - " + 
+				"Ananda Apriliansah / 71180263 - " + 
+				"Yoga Kurnia Widi Pratama / 71180277");
+		frame.getContentPane().add(copyRight);
 	}
 	public void toHome(ActionEvent evt,UserWallet u) {
 		Home pro1 = new Home(u);
 		pro1.frame.setVisible(true);
 		this.frame.setVisible(true);
-		this.frame.setDefaultCloseOperation(this.frame.EXIT_ON_CLOSE);
 		this.frame.dispose();
 	}
 //create Withdraw History
@@ -181,25 +195,28 @@ public class WithdrawBalance extends AbstractBorder{
 				infoinput.close();
 				
 			}catch (IOException e) {
+				System.out.println(e.getMessage());
 				e.printStackTrace();
 			}
 			
 			}catch (FileNotFoundException e) {
+				System.out.println(e.getMessage());
 				e.printStackTrace();
 			}
 		
 		Pattern pat = Pattern.compile(numPat);
 		Matcher mat = pat.matcher(value);
 		boolean ok = mat.matches();
-		System.out.println(value);
 		if(ok) {
 //value type double 
 		double value1 = Double.parseDouble(value);
 		double balance1 = Double.parseDouble(balance);
+		IDR idr = new IDR(balance1);
 //IDR check
 		if(!value.isEmpty()) {
-			if(value1 <= balance1 && value1 >0) {
-				double saldo = balance1 - value1;
+			if(value1 <= idr.getValue() && value1 >0) {
+//				double saldo = balance1 - value1;
+				idr.withdrawValue(value1);
 				File f2 = new File("profile/"+Main.User+".txt");
 				File file = new File("profile/temp.txt");
 			this.createHistoryWithdraw(value);
@@ -212,10 +229,11 @@ public class WithdrawBalance extends AbstractBorder{
 				
 						Write.write(""+name+"\n"+password+"\n"+ 
 								    email + "\n" + brth +
-								    "\n" + address+"\n"+Math.round(saldo));
+								    "\n" + address+"\n"+Math.round(idr.getValue()));
 						Write.close();
 					} 
 					catch (IOException e) {
+						System.out.println(e.getMessage());
 						e.printStackTrace();
 					}
 					
@@ -227,13 +245,11 @@ public class WithdrawBalance extends AbstractBorder{
 						reWrite = new FileWriter(file,false);
 						reWrite.write(""+name+"\n"+password+"\n"+ 
 							    email + "\n" + brth +
-							    "\n" + address+"\n"+Math.round(saldo));
-						System.out.println("ternyata masuk else");
-						
+							    "\n" + address+"\n"+Math.round(idr.getValue()));
 						reWrite.close();
 					} 
 					catch (IOException e) {
-						// TODO Auto-generated catch block
+						System.out.println(e.getMessage());
 						e.printStackTrace();
 					}	
 					
@@ -245,12 +261,11 @@ public class WithdrawBalance extends AbstractBorder{
 						reWrite = new FileWriter(f2,false);
 						reWrite.write(""+name+"\n"+password+"\n"+ 
 							    email + "\n" + brth +
-							    "\n" + address+"\n"+Math.round(saldo));
-						System.out.println("ternyata masuk else");
+							    "\n" + address+"\n"+Math.round(idr.getValue()));
 						JOptionPane.showMessageDialog(frame, "Transaksi Berhasil", "Input Success", JOptionPane.PLAIN_MESSAGE);
 						reWrite.close();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
+						System.out.println(e.getMessage());
 						e.printStackTrace();
 					}
 							
