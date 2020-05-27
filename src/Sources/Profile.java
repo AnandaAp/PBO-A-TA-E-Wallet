@@ -57,17 +57,12 @@ public class Profile implements BackHome{
 			e.printStackTrace();
 		}
 		
-		System.out.println(nam);
-		System.out.println(eml);
-		System.out.println(bdy);
-		System.out.println(ads);
-		
-		
 		frame = new JFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/wallet.png"));
 		frame.setTitle("E-Wallet");
 		frame.setBounds(100, 100, 450, 308);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().setBackground(new Color(234, 240, 248));
 		
@@ -95,7 +90,7 @@ public class Profile implements BackHome{
 		frame.getContentPane().add(email);
 
 		JLabel emailValue = new JLabel(eml);
-		emailValue.setBounds(124, 78, 302, 14);
+		emailValue.setBounds(124, 78, 302, 16);
 		frame.getContentPane().add(emailValue);
 		
 		//print birthday

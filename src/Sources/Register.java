@@ -73,6 +73,7 @@ public class Register extends AbstractBorder{
 		}
 	private void initialize(UserWallet u) {
 		frame = new JFrame();
+		frame.setResizable(false);
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/wallet.png"));
 		frame.setTitle("E-Wallet");
 		frame.setBackground(new Color(234, 240, 248));

@@ -60,6 +60,7 @@ public class Home {
 		}
 		
 		frame = new JFrame();
+		frame.setResizable(false);
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/wallet.png"));
 		frame.setTitle("E-WAllet");
 		frame.getContentPane().setBackground(new Color(234, 240, 248));

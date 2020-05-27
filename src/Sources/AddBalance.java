@@ -90,6 +90,7 @@ public class AddBalance extends AbstractBorder implements BackHome{
 	 */
 	private void initialize(UserWallet u) {
 		frame = new JFrame();
+		frame.setResizable(false);
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/wallet.png"));
 		frame.setTitle("E-Wallet");
 		frame.setBounds(100, 100, 450, 264);

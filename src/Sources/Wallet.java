@@ -84,6 +84,7 @@ public class Wallet  extends AbstractBorder{
 
 	private void initialize(UserWallet u) {
 		frame = new JFrame();
+		frame.setResizable(false);
 		frame.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/wallet.png"));
 		frame.setTitle("E-Wallet");
