@@ -26,13 +26,16 @@ import java.awt.RenderingHints;
 
 import javax.swing.JTextField;
 import javax.swing.border.AbstractBorder;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
-public class AddBalance extends AbstractBorder{
+public class AddBalance extends AbstractBorder implements BackHome{
 
 	private static final long serialVersionUID = 1L;
 	public JFrame frame;
@@ -52,6 +55,7 @@ public class AddBalance extends AbstractBorder{
     RenderingHints hints;
     private String numPat = "\\d+";
     private JLabel lblNewLabel_3;
+    public ImageIcon icon;
     
     /**
 	 * @wbp.parser.constructor
@@ -88,7 +92,7 @@ public class AddBalance extends AbstractBorder{
 		frame = new JFrame();
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/wallet.png"));
 		frame.setTitle("E-Wallet");
-		frame.setBounds(100, 100, 450, 250);
+		frame.setBounds(100, 100, 450, 264);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().setBackground(new Color(234, 240, 248));
@@ -104,7 +108,7 @@ public class AddBalance extends AbstractBorder{
 		frame.getContentPane().add(lblNewLabel_1);
 		
 		textField = new JTextField();
-		textField.setBounds(34, 89, 180, 28);
+		textField.setBounds(34, 89, 180, 32);
 		textField.setBorder(new Register(Color.black.darker(),2,6,0));
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
@@ -115,13 +119,14 @@ public class AddBalance extends AbstractBorder{
 		frame.getContentPane().add(lblNewLabel_2);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(236, 89, 180, 28);
+		textField_1.setBounds(236, 89, 180, 32);
 		textField_1.setBorder(new Register(Color.black.darker(),2,6,0));
 		frame.getContentPane().add(textField_1);
 		textField_1.setColumns(10);
 		
 		//confirm button
 		btnNewButton = new JButton("Confrim");
+		btnNewButton.setBackground(new Color(0, 255, 204));
 		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -136,10 +141,12 @@ public class AddBalance extends AbstractBorder{
 		
 		//back button
 		btnNewButton_1 = new JButton("Cancel");
+		btnNewButton_1.setForeground(Color.BLACK);
+		btnNewButton_1.setBackground(new Color(255, 255, 255));
 		btnNewButton_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				toHome(e, u);
+				toHome(u);
 			}
 		});
 		
@@ -161,10 +168,26 @@ public class AddBalance extends AbstractBorder{
 				"Ananda Apriliansah / 71180263 - " + 
 				"Yoga Kurnia Widi Pratama / 71180277");
 		frame.getContentPane().add(copyRight);
+		this.icon = new ImageIcon("images/Back.png");
+		JLabel back = new JLabel("");
+		back.setIcon(new ImageIcon("images/Back.png"));
+		back.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				toHome(u);
+			}
+		});
+		back.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
+		back.setFont(new Font("Tahoma", Font.BOLD, 11));
+		back.setBounds(6, 5, 37, 25);
+		frame.getContentPane().add(back);
 	}
 	
 	//back home
-	public void toHome(ActionEvent evt,UserWallet u) {
+	
+	@Override
+	public void toHome(UserWallet u) {
 		Home pro1 = new Home(u);
 		pro1.frame.setVisible(true);
 		this.frame.setVisible(false);

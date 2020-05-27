@@ -17,8 +17,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import java.awt.Toolkit;
+import javax.swing.SwingConstants;
 
-public class Profile {
+public class Profile implements BackHome{
 
 	public JFrame frame;
 	public String nam, eml, bdy, ads;
@@ -48,11 +49,11 @@ public class Profile {
 					info = infoInput.readLine();
 				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
 				e.printStackTrace();
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -65,7 +66,7 @@ public class Profile {
 		frame = new JFrame();
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/wallet.png"));
 		frame.setTitle("E-Wallet");
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 450, 308);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().setBackground(new Color(234, 240, 248));
@@ -78,12 +79,13 @@ public class Profile {
 		
 		//print name
 		JLabel name = new JLabel("Name : ");
+		name.setHorizontalAlignment(SwingConstants.LEFT);
 		name.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		name.setBounds(30, 47, 72, 14);
 		frame.getContentPane().add(name);
 
 		JLabel nameValue = new JLabel(nam);
-		nameValue.setBounds(124, 47, 302, 14);
+		nameValue.setBounds(124, 47, 302, 15);
 		frame.getContentPane().add(nameValue);
 		
 		//print email
@@ -123,7 +125,7 @@ public class Profile {
 		back.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				toHome(e, u);
+				toHome(u);
 			}
 		});
 		back.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -142,6 +144,8 @@ public class Profile {
 		frame.getContentPane().add(copyRight);
 		
 		JButton logOut = new JButton("Log Out");
+		logOut.setForeground(Color.WHITE);
+		logOut.setBackground(Color.RED);
 		logOut.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -172,7 +176,8 @@ public class Profile {
 			}
 		
 	}
-	public void toHome(MouseEvent e, UserWallet u) {
+	@Override
+	public void toHome(UserWallet u) {
 		Home pro1= new Home(u);
 		pro1.frame.setVisible(true);
 		this.frame.setVisible(false);

@@ -53,6 +53,7 @@ public class Wallet  extends AbstractBorder{
     private int strokePad;
     private int pointerPad = 4;
     RenderingHints hints;
+    private final JLabel copyRight = new JLabel("\u00A9Copyright 2020");
     /**
 	 * @wbp.parser.constructor
 	 */
@@ -87,7 +88,7 @@ public class Wallet  extends AbstractBorder{
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/wallet.png"));
 		frame.setTitle("E-Wallet");
 		frame.getContentPane().setBackground(new Color(234, 240, 248));
-		frame.setBounds(100, 100, 420, 260);
+		frame.setBounds(100, 100, 420, 275);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -100,24 +101,24 @@ public class Wallet  extends AbstractBorder{
 		//username
 		JLabel lblNewLabel = new JLabel("Email");
 		lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		lblNewLabel.setBounds(37, 77, 71, 16);
+		lblNewLabel.setBounds(37, 78, 71, 16);
 		frame.getContentPane().add(lblNewLabel);
 		
 		txtUsername = new JTextField();
 		txtUsername.setBorder(new Register(Color.black.darker(),2,6,0));
-		txtUsername.setBounds(117, 72, 236, 28);
+		txtUsername.setBounds(117, 72, 236, 32);
 		frame.getContentPane().add(txtUsername);
 		txtUsername.setColumns(10);
 		
 		//password
 		JLabel lblPassword = new JLabel("Password");
 		lblPassword.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		lblPassword.setBounds(37, 126, 71, 16);
+		lblPassword.setBounds(37, 127, 71, 16);
 		frame.getContentPane().add(lblPassword);
 		
 		passwordField = new JPasswordField();
 		passwordField.setBorder(new Register(Color.black.darker(),2,6,0));
-		passwordField.setBounds(117, 121, 236, 28);
+		passwordField.setBounds(117, 121, 236, 32);
 		frame.getContentPane().add(passwordField);
 		
 		//login button
@@ -134,7 +135,8 @@ public class Wallet  extends AbstractBorder{
 		
 		//register button
 		JLabel lblNewLabel_2 = new JLabel("Don't have any account yet?");
-		lblNewLabel_2.setBounds(58, 190, 178, 20);
+		lblNewLabel_2.setFont(new Font("Lucida Sans", Font.PLAIN, 11));
+		lblNewLabel_2.setBounds(82, 191, 162, 20);
 		frame.getContentPane().add(lblNewLabel_2);
 		
 		JLabel regis = new JLabel("Register Now!!!");
@@ -147,8 +149,8 @@ public class Wallet  extends AbstractBorder{
 			}
 		});
 		regis.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		regis.setFont(new Font("Lucida Grande", Font.BOLD, 13));
-		regis.setBounds(236, 189, 101, 23);
+		regis.setFont(new Font("Lucida Sans", Font.BOLD, 11));
+		regis.setBounds(239, 190, 101, 23);
 		frame.getContentPane().add(regis);
 		this.hideAndShowPassword = new JLabel("New label");
 		
@@ -165,6 +167,10 @@ public class Wallet  extends AbstractBorder{
 		hideAndShowPassword.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		hideAndShowPassword.setBounds(362, 128, 25, 16);
 		frame.getContentPane().add(hideAndShowPassword);
+		copyRight.setBounds(159, 219, 87, 17);
+		frame.getContentPane().add(copyRight);
+		copyRight.setToolTipText("Author - Rusel Alexander /71180251 - Y. T. Rinto Pradhana / 71180259 - Ananda Apriliansah / 71180263 - Yoga Kurnia Widi Pratama / 71180277");
+		copyRight.setFont(new Font("Dialog", Font.PLAIN, 10));
 	}
 	public void MyButton1ActionPerformed(MouseEvent e,UserWallet u) { 
 		Register jfrm1= new Register(u);
@@ -260,7 +266,7 @@ public class Wallet  extends AbstractBorder{
 			this.check = true;
 		}
 		else {
-			this.passwordField.setEchoChar('â€¢');
+			this.passwordField.setEchoChar('•');
 			this.image = new ImageIcon("images/eyes.png");
 			j.setIcon(this.image);
 			j.setToolTipText("Show Text");

@@ -20,10 +20,9 @@ import java.awt.event.MouseEvent;
 import java.awt.*;
 import java.awt.geom.*;
 import javax.swing.border.AbstractBorder;
+import javax.swing.SwingConstants;
 public class Register extends AbstractBorder{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	public JFrame frame;
 	private JTextField fullname,email,birth,address;
@@ -76,6 +75,7 @@ public class Register extends AbstractBorder{
 		frame = new JFrame();
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/wallet.png"));
 		frame.setTitle("E-Wallet");
+		frame.setBackground(new Color(234, 240, 248));
 		frame.getContentPane().setBackground(new Color(234, 240, 248));
 		frame.setBounds(100, 100, 650, 452);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -90,68 +90,68 @@ public class Register extends AbstractBorder{
 		//full name
 		JLabel lblNewLabel_1 = new JLabel("Full Name");
 		lblNewLabel_1.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		lblNewLabel_1.setBounds(28, 87, 74, 14);
+		lblNewLabel_1.setBounds(28, 89, 74, 14);
 		frame.getContentPane().add(lblNewLabel_1);
 		fullname = new JTextField();
 		fullname.setBorder(new Register(Color.black.darker(),2,6,0));
 		fullname.setText("");
-		fullname.setBounds(132, 81, 454, 28);
+		fullname.setBounds(132, 81, 454, 32);
 		frame.getContentPane().add(fullname);
 		fullname.setColumns(10);
 		
 		//email
 		JLabel lblNewLabel_2 = new JLabel("E-mail");
 		lblNewLabel_2.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		lblNewLabel_2.setBounds(28, 140, 50, 14);
+		lblNewLabel_2.setBounds(28, 142, 50, 14);
 		frame.getContentPane().add(lblNewLabel_2);
 		
 		email = new JTextField();
 		email.setBorder(new Register(Color.black.darker(),2,6,0));
 		email.setText("");
 		email.setColumns(10);
-		email.setBounds(132, 134, 454, 28);
+		email.setBounds(132, 134, 454, 32);
 		frame.getContentPane().add(email);
 		
 		//password
 		JLabel lblNewLabel_3 = new JLabel("Password");
 		lblNewLabel_3.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		lblNewLabel_3.setBounds(28, 195, 69, 14);
+		lblNewLabel_3.setBounds(28, 197, 69, 14);
 		frame.getContentPane().add(lblNewLabel_3);
 		this.passwordField = new JPasswordField();
 		passwordField.setBorder(new Register(Color.black.darker(),2,6,0));
-		passwordField.setEchoChar('â€¢');
-		passwordField.setBounds(132, 189, 454, 28);
+		passwordField.setEchoChar('•');
+		passwordField.setBounds(132, 189, 454, 32);
 		frame.getContentPane().add(passwordField);
 		@SuppressWarnings("deprecation")
 		String cekPass = passwordField.getText();
 		//password warning
-		JLabel lblNewLabel_6_1 = new JLabel("password harus: minimal 8 karakter, 1 huruf kecil, 1 huruf besar, 1 angka, dan 1 simbol(!@#$%^&*)");
+		JLabel lblNewLabel_6_1 = new JLabel("password harus: minimal 8 karakter, 1 huruf kecil, 1 huruf besar, 1 angka, dan 1 simbol");
 		lblNewLabel_6_1.setForeground(Color.RED);
 		lblNewLabel_6_1.setFont(new Font("Tahoma", Font.ITALIC, 10));
-		lblNewLabel_6_1.setBounds(137, 220, 446, 14);
+		lblNewLabel_6_1.setBounds(137, 220, 401, 14);
 		frame.getContentPane().add(lblNewLabel_6_1);
 		//address
 		JLabel lblNewLabel_4 = new JLabel("Address");
 		lblNewLabel_4.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		lblNewLabel_4.setBounds(28, 249, 61, 14);
+		lblNewLabel_4.setBounds(28, 251, 61, 14);
 		frame.getContentPane().add(lblNewLabel_4);
 		
 		address = new JTextField();
 		address.setBorder(new Register(Color.black.darker(),2,6,0));
-		address.setBounds(132, 243, 454, 28);
+		address.setBounds(132, 243, 454, 32);
 		frame.getContentPane().add(address);
 		address.setColumns(10);
 		
 		//birthday
 		JLabel lblNewLabel_5 = new JLabel("Tanggal Lahir");
 		lblNewLabel_5.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		lblNewLabel_5.setBounds(28, 298, 94, 25);
+		lblNewLabel_5.setBounds(28, 300, 94, 25);
 		frame.getContentPane().add(lblNewLabel_5);
 		
 		birth = new JTextField();
 		birth.setBorder(new Register(Color.black.darker(),2,6,0));
 		birth.setColumns(10);
-		birth.setBounds(133, 296, 454, 28);
+		birth.setBounds(133, 296, 454, 32);
 		frame.getContentPane().add(birth);
 		
 		JLabel lblNewLabel_6 = new JLabel("ex. 12 Agustus 1998");
@@ -161,7 +161,7 @@ public class Register extends AbstractBorder{
 		
 		//register button
 		JButton btnNewButton = new JButton("Register");
-		btnNewButton.setBackground(new Color(204, 255, 102));
+		btnNewButton.setBackground(new Color(0, 255, 204));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 					goToUserWaller(fullname, email, passwordField, address, u, arg0,cekPass,lblNewLabel_6_1);
@@ -169,18 +169,21 @@ public class Register extends AbstractBorder{
 		});
 		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNewButton.setBounds(332, 367, 100, 23);
+		btnNewButton.setBounds(332, 367, 87, 23);
 		frame.getContentPane().add(btnNewButton);
 		
-		JButton btnNewButton_1 = new JButton("Cancel");
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				backToLogin(e, u);
+		JLabel btnNewButton_1 = new JLabel("Cancel");
+		btnNewButton_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				backToLogin(u);
 			}
 		});
+		btnNewButton_1.setHorizontalAlignment(SwingConstants.CENTER);
+		btnNewButton_1.setBackground(Color.WHITE);
 		btnNewButton_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNewButton_1.setBounds(220, 367, 104, 23);
+		btnNewButton_1.setBounds(274, 367, 50, 23);
 		frame.getContentPane().add(btnNewButton_1);
 		
 		hideAndShowPassword = new JLabel("");
@@ -198,6 +201,12 @@ public class Register extends AbstractBorder{
 		hideAndShowPassword.setBounds(593, 196, 26, 16);
 		frame.getContentPane().add(hideAndShowPassword);
 		
+		JLabel copyRight = new JLabel("\u00A9Copyright 2020");
+		copyRight.setToolTipText("Author - Rusel Alexander /71180251 - Y. T. Rinto Pradhana / 71180259 - Ananda Apriliansah / 71180263 - Yoga Kurnia Widi Pratama / 71180277");
+		copyRight.setFont(new Font("Dialog", Font.PLAIN, 10));
+		copyRight.setBounds(287, 396, 87, 17);
+		frame.getContentPane().add(copyRight);
+		
 		
 	}
 	public void Clicked(MouseEvent e, JLabel j) {
@@ -209,14 +218,14 @@ public class Register extends AbstractBorder{
 			this.check = true;
 		}
 		else {
-			this.passwordField.setEchoChar('â€¢');
+			this.passwordField.setEchoChar('•');
 			this.image = new ImageIcon("images/eyes.png");
 			j.setIcon(this.image);
 			j.setToolTipText("Show Text");
 			this.check = false;
 		}
 	}
-	public void backToLogin(ActionEvent e,UserWallet u) {
+	public void backToLogin(UserWallet u) {
 		Wallet w = new Wallet(u);
 		w.frame.setVisible(true);
 		this.frame.setVisible(false);
@@ -254,7 +263,7 @@ public class Register extends AbstractBorder{
 					else {
 						JOptionPane.showMessageDialog(frame, "Register berhasil, Selamat datang " + nama,
 								  "Register",JOptionPane.PLAIN_MESSAGE,new ImageIcon("images/Register.png"));
-						backToLogin(arg0, u);
+						backToLogin(u);
 					}
 				}
 			}

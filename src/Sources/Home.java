@@ -63,14 +63,14 @@ public class Home {
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/wallet.png"));
 		frame.setTitle("E-WAllet");
 		frame.getContentPane().setBackground(new Color(234, 240, 248));
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 450, 317);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		//Welcome Text
 		JLabel welcomeText = new JLabel("WELCOME");
 		welcomeText.setFont(new Font("Lucida Grande", Font.PLAIN, 35));
-		welcomeText.setBounds(150, 25, 179, 50);
+		welcomeText.setBounds(150, 25, 196, 50);
 		frame.getContentPane().add(welcomeText);
 		//Welcome Icon
 		JLabel welcomeIcon = new JLabel("");
@@ -118,13 +118,13 @@ public class Home {
 		});
 		
 		withdrawBalance.setFont(new Font("Tahoma", Font.BOLD, 11));
-		withdrawBalance.setBounds(222, 200, 135, 23);
+		withdrawBalance.setBounds(222, 200, 137, 23);
 		frame.getContentPane().add(withdrawBalance);
 		
 		JLabel nameTitle = new JLabel(name);
 		nameTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		nameTitle.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		nameTitle.setBounds(123, 76, 217, 25);
+		nameTitle.setBounds(126, 76, 234, 25);
 		frame.getContentPane().add(nameTitle);
 		
 		//Info - Balance

@@ -20,7 +20,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Toolkit;
 
-public class History {
+public class History implements BackHome{
 	public String transaksi1, transaksi2, transaksi3, transaksi4;
 	public String transaksi5;
 	public JFrame frame;
@@ -45,12 +45,12 @@ public class History {
 			frame.setTitle("E-Wallet");
 			frame.getContentPane().setBackground(new Color(234, 240, 248));
 			frame.getContentPane().setForeground(Color.BLACK);
-			frame.setBounds(100, 100, 310, 300);
+			frame.setBounds(100, 100, 310, 320);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.getContentPane().setLayout(null);
 			JLabel lblNewLabel = new JLabel("History");
 			lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
-			lblNewLabel.setBounds(120, 6, 81, 25);
+			lblNewLabel.setBounds(110, 6, 81, 25);
 			frame.getContentPane().add(lblNewLabel);
 			if(file.exists()) {
 				try {
@@ -102,6 +102,7 @@ public class History {
 						infoinput2.close();
 					}
 				catch (FileNotFoundException e) {
+					System.out.println(e.getMessage());
 					e.printStackTrace();	
 				}
 				this.Transaksi1 = new JLabel(this.transaksi1);
@@ -130,6 +131,7 @@ public class History {
 			}
 		}
 		catch (Exception e) {
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 		this.icon = new ImageIcon("images/Back.png");
@@ -138,7 +140,7 @@ public class History {
 		back.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				toHome(e, u);
+				toHome(u);
 			}
 		});
 		back.setIcon(this.icon);
@@ -153,12 +155,19 @@ public class History {
 			}
 		});
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNewButton_1.setBounds(91, 233, 133, 23);
+		btnNewButton_1.setBounds(79, 233, 133, 23);
 		frame.getContentPane().add(btnNewButton_1);
+		
+		JLabel copyRight = new JLabel("\u00A9Copyright 2020");
+		copyRight.setToolTipText("Author - Rusel Alexander /71180251 - Y. T. Rinto Pradhana / 71180259 - Ananda Apriliansah / 71180263 - Yoga Kurnia Widi Pratama / 71180277");
+		copyRight.setFont(new Font("Dialog", Font.PLAIN, 10));
+		copyRight.setBounds(105, 263, 87, 17);
+		frame.getContentPane().add(copyRight);
 	}
 
 	
-	public void toHome(MouseEvent e, UserWallet u) {
+	@Override
+	public void toHome(UserWallet u) {
 		Home pro1= new Home(u);
 		pro1.frame.setVisible(true);
 		this.frame.setVisible(false);
@@ -170,6 +179,7 @@ public class History {
 		try {
 			pb.start();
 		} catch (IOException e) {
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 	}
