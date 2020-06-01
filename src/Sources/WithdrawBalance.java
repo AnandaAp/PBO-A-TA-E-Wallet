@@ -3,12 +3,11 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,13 +34,14 @@ import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
+
 public class WithdrawBalance extends AbstractBorder implements BackHome{
 
 	
 	private static final long serialVersionUID = 1L;
 	public JFrame frame;
-	private JTextField textField;
-	public String name,password, email, brth, address, balance;
+	private JTextField idrTextField;
+	private double balance;
 	private Color color;
     private int thickness = 4;
     private int radii = 8;
@@ -53,11 +53,15 @@ public class WithdrawBalance extends AbstractBorder implements BackHome{
     RenderingHints hints;
     private String numPat = "\\d+";
     public ImageIcon icon;
+    private String query = "select saldo from user_saldo where user_email = ?";
+    private String sql = "UPDATE user_saldo set saldo = ? where user_email = ?";
+    private String storedProcedure = "call setelah_transaksi(?,?,?,?)";
+    private ResultSet rs;
     
     /**
 	 * @wbp.parser.constructor
 	 */
-	public WithdrawBalance(UserWallet u) {
+	public WithdrawBalance(Currency u) {
 		this.initialize(u);
 	}
 	public WithdrawBalance(Color color) {
@@ -82,64 +86,50 @@ public class WithdrawBalance extends AbstractBorder implements BackHome{
 		    insets = new Insets(pad,pad,bottomPad,pad);
 		}
 
-	private void initialize(UserWallet u) {
+	private void initialize(Currency u) {
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/wallet.png"));
 		frame.setTitle("E-Wallet");
-		frame.setBounds(100, 100, 350, 239);
+		frame.setBounds(100, 100, 374, 239);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().setBackground(new Color(234, 240, 248));
 		
 		//title
-		JLabel lblNewLabel = new JLabel("Withdraw Balance");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel.setBounds(79, 21, 189, 25);
-		frame.getContentPane().add(lblNewLabel);
+		JLabel withdrawLabel = new JLabel("Withdraw Balance");
+		withdrawLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
+		withdrawLabel.setBounds(98, 21, 189, 25);
+		frame.getContentPane().add(withdrawLabel);
 		
 		//withdraw
-		JLabel lblNewLabel_1 = new JLabel("IDR");
-		lblNewLabel_1.setBounds(161, 56, 27, 14);
-		frame.getContentPane().add(lblNewLabel_1);
+		JLabel idrLabel = new JLabel("IDR");
+		idrLabel.setBounds(145, 75, 27, 14);
+		frame.getContentPane().add(idrLabel);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(79, 74, 183, 32);
-		textField.setBorder(new Register(Color.black.darker(),2,6,0));
-		frame.getContentPane().add(textField);
+		idrTextField = new JTextField();
+		idrTextField.setColumns(10);
+		idrTextField.setBounds(64, 97, 183, 35);
+		idrTextField.setBorder(new Register(Color.black.darker(),2,6,0));
+		frame.getContentPane().add(idrTextField);
 		
 		//confirm button
-		JButton btnNewButton = new JButton("Confirm");
-		btnNewButton.setBackground(new Color(0, 255, 204));
-		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton confirmButton = new JButton("Confirm");
+		confirmButton.setForeground(Color.WHITE);
+		confirmButton.setBackground(new Color(64,162,41));
+		confirmButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		confirmButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				WithdrawFunction(textField);
+				WithdrawFunction(idrTextField);
 			}
 		});
 		
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNewButton.setBounds(179, 111, 85, 23);
-		frame.getContentPane().add(btnNewButton);
-		
-		//back button
-		JButton btnNewButton_1 = new JButton("Cancel");
-		btnNewButton_1.setForeground(Color.BLACK);
-		btnNewButton_1.setBackground(new Color(255, 255, 255));
-		btnNewButton_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				toHome(u);
-			}
-		});
-		
-		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNewButton_1.setBounds(80, 111, 85, 23);
-		frame.getContentPane().add(btnNewButton_1);
+		confirmButton.setFont(new Font("Tahoma", Font.BOLD, 11));
+		confirmButton.setBounds(249, 95, 85, 40);
+		frame.getContentPane().add(confirmButton);
 		JLabel copyRight = new JLabel("\u00A9Copyright 2020");
 		copyRight.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
-		copyRight.setBounds(129, 174, 89, 14);
+		copyRight.setBounds(141, 174, 89, 14);
 		copyRight.setToolTipText("Author - Rusel Alexander /71180251 - " + 
 				"Y. T. Rinto Pradhana / 71180259 - " + 
 				"Ananda Apriliansah / 71180263 - " + 
@@ -151,7 +141,7 @@ public class WithdrawBalance extends AbstractBorder implements BackHome{
 		back.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				toHome(u);
+				toHome();
 			}
 		});
 		back.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -161,146 +151,86 @@ public class WithdrawBalance extends AbstractBorder implements BackHome{
 		frame.getContentPane().add(back);
 	}
 	@Override
-	public void toHome(UserWallet u) {
-		Home pro1 = new Home(u);
+	public void toHome() {
+		Home pro1 = new Home();
 		pro1.frame.setVisible(true);
 		this.frame.setVisible(true);
 		this.frame.dispose();
 	}
 	
 //create Withdraw History
-	public void createHistoryWithdraw(String value) {
-		File history = new File("profile/"+Main.User+"history.txt");
-		if(!history.exists()) {
-			try {
-				history.createNewFile();
-				FileWriter Write = new FileWriter(history);
-				Write.write("Pengeluaran sebesar Rp."+value+"\n");
-				Write.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		else {
-			try {
-				history.createNewFile();
-				FileWriter Write = new FileWriter(history,true);
-				Write.write("Pengeluaran sebesar Rp."+value+"\n");
-				Write.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+	public void createHistoryWithdraw(ConnectionDataBase db,double idr,double idr1) {
+		try(PreparedStatement pr = db.con.prepareStatement(this.storedProcedure)) {
+			pr.setString(1,Main.User);
+			pr.setString(2, "Pemasukan sebesar Rp."+Math.round(idr));
+			pr.setDouble(3, idr1);
+			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+			pr.setDate(4, date);
+			rs = pr.executeQuery();
+			pr.close();
+			rs.close();
+		} 
+		catch (SQLException e) {
+			System.out.println("error: "+e.getMessage());
+			e.printStackTrace();
 		}
 	}
 //Withdraw Function
 	public void WithdrawFunction(JTextField textField) {
 		String value = textField.getText();
-		String info = "";
-		int count = 0;
-		try {
-			BufferedReader infoinput = new BufferedReader (new FileReader(new File("profile/"+Main.User+".txt")));
-			try {
-				info = infoinput.readLine();
-				while(info != null) {
-					count += 1;
-					switch(count) {
-					case 1 : name = info; break;
-					case 2 : password = info; break;
-					case 3 : email = info; break;
-					case 4 : brth = info; break;
-					case 5 : address = info;break;
-					case 6 : balance = info;break;
-					default : break;
-					}
-					info = infoinput.readLine();
-				}				
-				infoinput.close();
-				
-			}catch (IOException e) {
-				System.out.println(e.getMessage());
-				e.printStackTrace();
-			}
-			
-			}catch (FileNotFoundException e) {
-				System.out.println(e.getMessage());
-				e.printStackTrace();
-			}
-		
 		Pattern pat = Pattern.compile(numPat);
 		Matcher mat = pat.matcher(value);
 		boolean ok = mat.matches();
-		if(ok) {
-//value type double 
-		double value1 = Double.parseDouble(value);
-		double balance1 = Double.parseDouble(balance);
-		IDR idr = new IDR(balance1);
-//IDR check
-		if(!value.isEmpty()) {
-			if(value1 <= idr.getValue() && value1 >0) {
-//				double saldo = balance1 - value1;
-				idr.withdrawValue(value1);
-				File f2 = new File("profile/"+Main.User+".txt");
-				File file = new File("profile/temp.txt");
-			this.createHistoryWithdraw(value);
-//Overwrite file	
-				
-				if(!file.exists()) {
-					try {
-						file.createNewFile();
-						FileWriter Write = new FileWriter(file);
-				
-						Write.write(""+name+"\n"+password+"\n"+ 
-								    email + "\n" + brth +
-								    "\n" + address+"\n"+Math.round(idr.getValue()));
-						Write.close();
-					} 
-					catch (IOException e) {
-						System.out.println(e.getMessage());
-						e.printStackTrace();
-					}
-					
+		
+		if(ok && !value.isEmpty()) {
+//value type double
+			ConnectionDataBase db = new ConnectionDataBase();
+			db.connectDB();
+			//memindahkan nilai saldo dari database ke var balance
+			try(PreparedStatement pr = db.con.prepareStatement(this.query)){
+				pr.setString(1, Main.User);
+				this.rs = pr.executeQuery();
+				if(rs.next()) {
+					this.balance = this.rs.getDouble("saldo");
 				}
-				
-				else {
-					FileWriter reWrite;
-					try {
-						reWrite = new FileWriter(file,false);
-						reWrite.write(""+name+"\n"+password+"\n"+ 
-							    email + "\n" + brth +
-							    "\n" + address+"\n"+Math.round(idr.getValue()));
-						reWrite.close();
-					} 
-					catch (IOException e) {
-						System.out.println(e.getMessage());
-						e.printStackTrace();
-					}	
-					
-				}
-				
-				if(f2.exists()) {
-					FileWriter reWrite;
-					try {
-						reWrite = new FileWriter(f2,false);
-						reWrite.write(""+name+"\n"+password+"\n"+ 
-							    email + "\n" + brth +
-							    "\n" + address+"\n"+Math.round(idr.getValue()));
-						JOptionPane.showMessageDialog(frame, "Transaksi Berhasil", "Input Success", JOptionPane.PLAIN_MESSAGE);
-						reWrite.close();
-					} catch (IOException e) {
-						System.out.println(e.getMessage());
-						e.printStackTrace();
-					}
-							
+				rs = null;
+				pr.close();
 			}
-				//overwrite file end
+			catch (SQLException e) {
+				System.out.println("error: "+e.getMessage());
+				e.printStackTrace();
+			}
+			double value1 = Double.parseDouble(value);
+
+			IDR idr = new IDR(this.balance);
+	//IDR check
+			if(value1 <= idr.getValue() && value1 >0) {
+				idr.withdrawValue(value1);
+				try(PreparedStatement pr = db.con.prepareStatement(sql)){
+					pr.setDouble(1, idr.getValue());
+					pr.setString(2, Main.User);
+					pr.executeUpdate();
+					pr.close();
+				}
+				catch (SQLException e) {
+					System.out.println("error: "+e.getMessage());
+					e.printStackTrace();
+				}
+				this.createHistoryWithdraw(db, value1, idr.getValue());
+				db.closeDB();
+				JOptionPane.showMessageDialog(frame, "Transaksi Berhasil", "Input Success", JOptionPane.WARNING_MESSAGE,new ImageIcon("images/withdraw.png"));
 			}
 			else {
 				JOptionPane.showMessageDialog(frame, "Input tidak boleh melebihi jumlah saldo","Input Error",JOptionPane.WARNING_MESSAGE);
-			}
-		}
+			}			
 		}
 		else {
-			JOptionPane.showMessageDialog(frame, "Input yang anda masukkan salah","Input Error",JOptionPane.WARNING_MESSAGE);
+			if(!ok && !value.isEmpty()) {
+				JOptionPane.showMessageDialog(frame, "Input yang anda masukkan salah","Input Error",JOptionPane.WARNING_MESSAGE);
+			}
+			else if(value.isEmpty()) {
+				JOptionPane.showMessageDialog(frame, "Maaf anda harus memasukan nominal!","Input Error",JOptionPane.WARNING_MESSAGE);
+			}
 		}
 	}
 	

@@ -7,10 +7,9 @@ import javax.swing.JScrollPane;
 import java.awt.Font;
 
 import javax.swing.ImageIcon;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -28,15 +27,15 @@ public class History implements BackHome{
 	public String transaksi5;
 	public JFrame frame;
 	private ImageIcon icon;
-	
-	public History(UserWallet u) {
-		initialize(u);
+	private String sql = "select * from history where email = ?";
+	public History() {
+		initialize();
 	}
 
-	private void initialize(UserWallet u) {
-		String alamat = "profile/"+Main.User+"History.txt";
-		File file = new File(alamat);
+	private void initialize() {
 		try {
+			ConnectionDataBase db = new ConnectionDataBase();
+			db.connectDB();
 			frame = new JFrame();
 			frame.setResizable(false);
 			frame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/wallet.png"));
@@ -55,29 +54,37 @@ public class History implements BackHome{
 			frame.getContentPane().add(panel);
 			JTextArea area = new JTextArea(20,20);
 			area.setEditable(false);
-			if(file.exists()) {
 				try {
-					FileReader read = new FileReader(alamat);
-					BufferedReader bread = new BufferedReader(read);
-					area.read(bread, null);
-					bread.close();
-					panel.add(area, BorderLayout.CENTER);
-					panel.setLayout(new BorderLayout(0,0));
-					JScrollPane scroll = new JScrollPane(area,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-					panel.add(scroll);
-				} catch (IOException e1) {
+					try(PreparedStatement pr = db.con.prepareStatement(sql)){
+						pr.setString(1, Main.User);
+						ResultSet rs = pr.executeQuery();
+						if(rs.isBeforeFirst()) {
+							while(rs.next()) {
+								area.append(rs.getString("keterangan"));
+								area.append("\n");
+								panel.add(area, BorderLayout.CENTER);
+								panel.setLayout(new BorderLayout(0,0));
+								JScrollPane scroll = new JScrollPane(area,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+								panel.add(scroll);
+							}
+						}
+						else {
+							area.setText("Belum Ada Transaksi");
+							panel.add(area, BorderLayout.CENTER);
+							panel.setLayout(new BorderLayout(0,0));
+							JScrollPane scroll = new JScrollPane(area,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+							panel.add(scroll);
+							JOptionPane.showMessageDialog(frame, "Maaf Belum Ada Transaksi Yang Tercatat");
+						}
+						area.setEditable(false);
+						pr.close();
+						rs.close();
+						db.closeDB();
+					}
+				} catch (SQLException e1) {
 					System.out.println(e1.getMessage());
 					e1.printStackTrace();
 				}
-			}
-			else {
-				area.setText("Belum Ada Transaksi");
-				panel.add(area, BorderLayout.CENTER);
-				panel.setLayout(new BorderLayout(0,0));
-				JScrollPane scroll = new JScrollPane(area,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-				panel.add(scroll);
-				JOptionPane.showMessageDialog(frame, "Maaf Belum Ada Transaksi Yang Tercatat");
-			}
 		}
 		catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -89,7 +96,7 @@ public class History implements BackHome{
 		back.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				toHome(u);
+				toHome();
 			}
 		});
 		back.setIcon(this.icon);
@@ -101,17 +108,12 @@ public class History implements BackHome{
 		copyRight.setToolTipText("Author - Rusel Alexander /71180251 - Y. T. Rinto Pradhana / 71180259 - Ananda Apriliansah / 71180263 - Yoga Kurnia Widi Pratama / 71180277");
 		copyRight.setFont(new Font("Dialog", Font.PLAIN, 10));
 		copyRight.setBounds(105, 263, 87, 17);
-		frame.getContentPane().add(copyRight);
-		
-		
-		
-		
+		frame.getContentPane().add(copyRight);	
 	}
-
 	
 	@Override
-	public void toHome(UserWallet u) {
-		Home pro1= new Home(u);
+	public void toHome() {
+		Home pro1= new Home();
 		pro1.frame.setVisible(true);
 		this.frame.setVisible(false);
 		this.frame.dispose();

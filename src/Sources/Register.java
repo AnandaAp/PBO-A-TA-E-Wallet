@@ -1,5 +1,6 @@
 package Sources;
 
+
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -19,21 +20,23 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.*;
 import java.awt.geom.*;
+import java.sql.SQLException;
+
 import javax.swing.border.AbstractBorder;
 import javax.swing.SwingConstants;
 public class Register extends AbstractBorder{
-	
 	private static final long serialVersionUID = 1L;
 	public JFrame frame;
 	private JTextField fullname,email,birth,address;
 	public static boolean cek = false;
 	public String strRegEx = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])"
-			+ "(?=.*[!@#$%^&*()_+{}:;'/?>.<,¡™£¢§¶•ªº–≠“‘«æ…ÚÆ¯˘¿Â˜ı◊])(?=\\S+$).{8,}$";
+			+ "(?=.*[!@#$%^&*()_+{}:;'/?>.<,¡™£¢§¶•ªº–≠“‘«æ…ÚÆ¯˘¿Â˜ı◊])(?=\\S+$).{8,16}$";
 	public String emailPattern = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)"
 			+ "*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
 	public String dateRegEx = "([1-9]|[12][0-9]|[3][01]) "
 			+ "(Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember|"
 			+ "januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember) \\d{4}";
+//	public String dateRegEx = "^(3[01]|[12][0-9]|0[1-9])-(1[0-2]|0[1-9])-[0-9]{4}$";
 	private boolean check = false;
 	private JLabel hideAndShowPassword;
 	private JPasswordField passwordField; 
@@ -47,8 +50,8 @@ public class Register extends AbstractBorder{
     /**
 	 * @wbp.parser.constructor
 	 */
-	public Register(UserWallet u) {
-		this.initialize(u);
+	public Register() {
+		this.initialize();
 	}
 	public Register(Color color) {
 		this(color, 4, 8, 7);
@@ -71,7 +74,7 @@ public class Register extends AbstractBorder{
 		    int bottomPad = pad + pointerSize + strokePad;
 		    insets = new Insets(pad,pad,bottomPad,pad);
 		}
-	private void initialize(UserWallet u) {
+	private void initialize() {
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/wallet.png"));
@@ -89,10 +92,10 @@ public class Register extends AbstractBorder{
 		frame.getContentPane().add(lblNewLabel);
 		
 		//full name
-		JLabel lblNewLabel_1 = new JLabel("Full Name");
-		lblNewLabel_1.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		lblNewLabel_1.setBounds(28, 89, 74, 14);
-		frame.getContentPane().add(lblNewLabel_1);
+		JLabel namaLengkapLabel = new JLabel("Nama Lengkap");
+		namaLengkapLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		namaLengkapLabel.setBounds(28, 83, 100, 24);
+		frame.getContentPane().add(namaLengkapLabel);
 		fullname = new JTextField();
 		fullname.setBorder(new Register(Color.black.darker(),2,6,0));
 		fullname.setText("");
@@ -101,10 +104,10 @@ public class Register extends AbstractBorder{
 		fullname.setColumns(10);
 		
 		//email
-		JLabel lblNewLabel_2 = new JLabel("E-mail");
-		lblNewLabel_2.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		lblNewLabel_2.setBounds(28, 142, 50, 14);
-		frame.getContentPane().add(lblNewLabel_2);
+		JLabel emailLabel = new JLabel("E-mail");
+		emailLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		emailLabel.setBounds(28, 142, 50, 14);
+		frame.getContentPane().add(emailLabel);
 		
 		email = new JTextField();
 		email.setBorder(new Register(Color.black.darker(),2,6,0));
@@ -114,10 +117,10 @@ public class Register extends AbstractBorder{
 		frame.getContentPane().add(email);
 		
 		//password
-		JLabel lblNewLabel_3 = new JLabel("Password");
-		lblNewLabel_3.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		lblNewLabel_3.setBounds(28, 197, 69, 14);
-		frame.getContentPane().add(lblNewLabel_3);
+		JLabel passwordLabel = new JLabel("Password");
+		passwordLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		passwordLabel.setBounds(28, 197, 69, 14);
+		frame.getContentPane().add(passwordLabel);
 		this.passwordField = new JPasswordField();
 		passwordField.setBorder(new Register(Color.black.darker(),2,6,0));
 		passwordField.setEchoChar('�');
@@ -126,16 +129,16 @@ public class Register extends AbstractBorder{
 		@SuppressWarnings("deprecation")
 		String cekPass = passwordField.getText();
 		//password warning
-		JLabel lblNewLabel_6_1 = new JLabel("password harus: minimal 8 karakter, 1 huruf kecil, 1 huruf besar, 1 angka, dan 1 simbol");
+		JLabel lblNewLabel_6_1 = new JLabel("password harus: 8-16 karakter, 1 huruf kecil, 1 huruf besar, 1 angka, dan 1 simbol");
 		lblNewLabel_6_1.setForeground(Color.RED);
 		lblNewLabel_6_1.setFont(new Font("Tahoma", Font.ITALIC, 10));
 		lblNewLabel_6_1.setBounds(137, 220, 401, 14);
 		frame.getContentPane().add(lblNewLabel_6_1);
 		//address
-		JLabel lblNewLabel_4 = new JLabel("Address");
-		lblNewLabel_4.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		lblNewLabel_4.setBounds(28, 251, 61, 14);
-		frame.getContentPane().add(lblNewLabel_4);
+		JLabel addressLabel = new JLabel("Alamat");
+		addressLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		addressLabel.setBounds(28, 251, 61, 14);
+		frame.getContentPane().add(addressLabel);
 		
 		address = new JTextField();
 		address.setBorder(new Register(Color.black.darker(),2,6,0));
@@ -144,10 +147,10 @@ public class Register extends AbstractBorder{
 		address.setColumns(10);
 		
 		//birthday
-		JLabel lblNewLabel_5 = new JLabel("Tanggal Lahir");
-		lblNewLabel_5.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		lblNewLabel_5.setBounds(28, 300, 94, 25);
-		frame.getContentPane().add(lblNewLabel_5);
+		JLabel birthLabel = new JLabel("Tanggal Lahir");
+		birthLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		birthLabel.setBounds(28, 300, 94, 25);
+		frame.getContentPane().add(birthLabel);
 		
 		birth = new JTextField();
 		birth.setBorder(new Register(Color.black.darker(),2,6,0));
@@ -155,37 +158,43 @@ public class Register extends AbstractBorder{
 		birth.setBounds(133, 296, 454, 32);
 		frame.getContentPane().add(birth);
 		
-		JLabel lblNewLabel_6 = new JLabel("ex. 12 Agustus 1998");
+		JLabel lblNewLabel_6 = new JLabel("ex. 12 April 1998");
 		lblNewLabel_6.setFont(new Font("Tahoma", Font.ITALIC, 11));
 		lblNewLabel_6.setBounds(139, 328, 100, 14);
 		frame.getContentPane().add(lblNewLabel_6);
 		
 		//register button
-		JButton btnNewButton = new JButton("Register");
-		btnNewButton.setBackground(new Color(0, 255, 204));
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton registerButton = new JButton("Register");
+		registerButton.setForeground(Color.WHITE);
+		registerButton.setBackground(new Color(64,162,41));
+		registerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-					goToUserWaller(fullname, email, passwordField, address, u, arg0,cekPass,lblNewLabel_6_1);
+					try {
+						goToUserWaller(fullname, email, passwordField, address,cekPass,lblNewLabel_6_1);
+					} catch (SQLException e) {
+						System.out.println("error: "+e.getMessage());
+						e.printStackTrace();
+					}
 			}
 		});
-		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNewButton.setBounds(332, 367, 87, 23);
-		frame.getContentPane().add(btnNewButton);
+		registerButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		registerButton.setFont(new Font("Tahoma", Font.BOLD, 11));
+		registerButton.setBounds(332, 358, 87, 32);
+		frame.getContentPane().add(registerButton);
 		
-		JLabel btnNewButton_1 = new JLabel("Cancel");
-		btnNewButton_1.addMouseListener(new MouseAdapter() {
+		JLabel cancelLabel = new JLabel("Cancel");
+		cancelLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				backToLogin(u);
+				backToLogin();
 			}
 		});
-		btnNewButton_1.setHorizontalAlignment(SwingConstants.CENTER);
-		btnNewButton_1.setBackground(Color.WHITE);
-		btnNewButton_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNewButton_1.setBounds(274, 367, 50, 23);
-		frame.getContentPane().add(btnNewButton_1);
+		cancelLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		cancelLabel.setBackground(Color.WHITE);
+		cancelLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		cancelLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
+		cancelLabel.setBounds(274, 358, 50, 32);
+		frame.getContentPane().add(cancelLabel);
 		
 		hideAndShowPassword = new JLabel("");
 		this.image = new ImageIcon("images/eyes.png");
@@ -226,13 +235,14 @@ public class Register extends AbstractBorder{
 			this.check = false;
 		}
 	}
-	public void backToLogin(UserWallet u) {
-		Wallet w = new Wallet(u);
+	public void backToLogin() {
+		Wallet w = new Wallet();
 		w.frame.setVisible(true);
 		this.frame.setVisible(false);
 		this.frame.dispose();
 	}
-	public void goToUserWaller(JTextField fullname,JTextField email,JPasswordField passwordField,JTextField address,UserWallet u, ActionEvent arg0,String cekPass,JLabel lblNewLabel_6_1) {
+	public void goToUserWaller(JTextField fullname,JTextField email,JPasswordField passwordField,JTextField address,String cekPass,JLabel lblNewLabel_6_1) throws SQLException {
+		UserWallet u = new UserWallet();
 		@SuppressWarnings("deprecation")
 		String nama = fullname.getText(),Email = email.getText(), 
 				   password = passwordField.getText(),alamat = address.getText(),
@@ -264,7 +274,7 @@ public class Register extends AbstractBorder{
 					else {
 						JOptionPane.showMessageDialog(frame, "Register berhasil, Selamat datang " + nama,
 								  "Register",JOptionPane.PLAIN_MESSAGE,new ImageIcon("images/Register.png"));
-						backToLogin(u);
+						backToLogin();
 					}
 				}
 			}

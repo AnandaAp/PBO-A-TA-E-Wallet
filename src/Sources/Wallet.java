@@ -26,13 +26,14 @@ import java.awt.geom.RoundRectangle2D;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+//import java.io.BufferedReader;
+//import java.io.File;
+//import java.io.FileNotFoundException;
+//import java.io.FileReader;
+//import java.io.IOException;
 import java.awt.Toolkit;
 import java.awt.Dialog.ModalExclusionType;
+import java.sql.*;
 public class Wallet  extends AbstractBorder{
 	/**
 	 * 
@@ -40,7 +41,7 @@ public class Wallet  extends AbstractBorder{
 	private static final long serialVersionUID = 1L;
 	private JLabel hideAndShowPassword;
 	public JFrame frame;
-	private JTextField txtUsername;
+	private JTextField emailField;
 	private JPasswordField passwordField;
 	private ImageIcon image;
 	private boolean check = false;
@@ -53,12 +54,12 @@ public class Wallet  extends AbstractBorder{
     private int strokePad;
     private int pointerPad = 4;
     RenderingHints hints;
-    private final JLabel copyRight = new JLabel("\u00A9Copyright 2020");
+    private final JLabel copyright = new JLabel("\u00A9Copyright 2020");
     /**
 	 * @wbp.parser.constructor
 	 */
-	public Wallet(UserWallet u) {
-		this.initialize(u);
+	public Wallet() {
+		this.initialize();
 	}
 	public Wallet(Color color) {
 		this(color, 4, 8, 7);
@@ -82,7 +83,8 @@ public class Wallet  extends AbstractBorder{
 		    insets = new Insets(pad,pad,bottomPad,pad);
 		}
 
-	private void initialize(UserWallet u) {
+	private void initialize() {
+		
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
@@ -100,59 +102,60 @@ public class Wallet  extends AbstractBorder{
 		frame.getContentPane().add(lblNewLabel_1);
 		
 		//username
-		JLabel lblNewLabel = new JLabel("Email");
-		lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		lblNewLabel.setBounds(37, 78, 71, 16);
-		frame.getContentPane().add(lblNewLabel);
+		JLabel emailLabel = new JLabel("Email");
+		emailLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		emailLabel.setBounds(37, 78, 71, 16);
+		frame.getContentPane().add(emailLabel);
 		
-		txtUsername = new JTextField();
-		txtUsername.setBorder(new Register(Color.black.darker(),2,6,0));
-		txtUsername.setBounds(117, 72, 236, 32);
-		frame.getContentPane().add(txtUsername);
-		txtUsername.setColumns(10);
+		emailField = new JTextField();
+		emailField.setBorder(new Register(Color.black.darker(),2,6,0));
+		emailField.setBounds(117, 72, 236, 32);
+		frame.getContentPane().add(emailField);
+		emailField.setColumns(10);
 		
 		//password
-		JLabel lblPassword = new JLabel("Password");
-		lblPassword.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
-		lblPassword.setBounds(37, 127, 71, 16);
-		frame.getContentPane().add(lblPassword);
+		JLabel passwordLabel = new JLabel("Password");
+		passwordLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+		passwordLabel.setBounds(37, 127, 71, 16);
+		frame.getContentPane().add(passwordLabel);
 		
 		passwordField = new JPasswordField();
+		passwordField.setEchoChar('•');
 		passwordField.setBorder(new Register(Color.black.darker(),2,6,0));
 		passwordField.setBounds(117, 121, 236, 32);
 		frame.getContentPane().add(passwordField);
 		
 		//login button
-		JButton btnNewButton = new JButton("Login");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton loginButton = new JButton("Login");
+		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				readArray("User.txt", txtUsername, passwordField, arg0, u);
+				cekAkun(emailField, passwordField);
 			}
 		});
-		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnNewButton.setBounds(152, 161, 90, 23);
-		frame.getContentPane().add(btnNewButton);
+		loginButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		loginButton.setFont(new Font("Tahoma", Font.BOLD, 12));
+		loginButton.setBounds(152, 161, 90, 23);
+		frame.getContentPane().add(loginButton);
 		
 		//register button
-		JLabel lblNewLabel_2 = new JLabel("Don't have any account yet?");
-		lblNewLabel_2.setFont(new Font("Lucida Sans", Font.PLAIN, 11));
-		lblNewLabel_2.setBounds(82, 191, 162, 20);
-		frame.getContentPane().add(lblNewLabel_2);
+		JLabel registerLabel = new JLabel("Don't have any account yet?");
+		registerLabel.setFont(new Font("Lucida Sans", Font.PLAIN, 11));
+		registerLabel.setBounds(82, 191, 162, 20);
+		frame.getContentPane().add(registerLabel);
 		
-		JLabel regis = new JLabel("Register Now!!!");
-		regis.setForeground(new Color(0, 206, 209));
-		regis.setToolTipText("Click this to go to register page");
-		regis.addMouseListener(new MouseAdapter() {
+		JLabel registerButton = new JLabel("Register Now!!!");
+		registerButton.setForeground(new Color(0, 206, 209));
+		registerButton.setToolTipText("Click this to go to register page");
+		registerButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				MyButton1ActionPerformed(e, u);
+				toRegister();
 			}
 		});
-		regis.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		regis.setFont(new Font("Lucida Sans", Font.BOLD, 11));
-		regis.setBounds(239, 190, 101, 23);
-		frame.getContentPane().add(regis);
+		registerButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		registerButton.setFont(new Font("Lucida Sans", Font.BOLD, 11));
+		registerButton.setBounds(239, 190, 101, 23);
+		frame.getContentPane().add(registerButton);
 		this.hideAndShowPassword = new JLabel("New label");
 		
 		this.image = new ImageIcon("images/eyes.png");
@@ -168,95 +171,49 @@ public class Wallet  extends AbstractBorder{
 		hideAndShowPassword.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		hideAndShowPassword.setBounds(362, 128, 25, 16);
 		frame.getContentPane().add(hideAndShowPassword);
-		copyRight.setBounds(159, 219, 87, 17);
-		frame.getContentPane().add(copyRight);
-		copyRight.setToolTipText("Author - Rusel Alexander /71180251 - Y. T. Rinto Pradhana / 71180259 - Ananda Apriliansah / 71180263 - Yoga Kurnia Widi Pratama / 71180277");
-		copyRight.setFont(new Font("Dialog", Font.PLAIN, 10));
+		
+		copyright.setBounds(159, 219, 87, 17);
+		frame.getContentPane().add(copyright);
+		copyright.setToolTipText("Author - Rusel Alexander /71180251 - Y. T. Rinto Pradhana / 71180259 - Ananda Apriliansah / 71180263 - Yoga Kurnia Widi Pratama / 71180277");
+		copyright.setFont(new Font("Dialog", Font.PLAIN, 10));
 	}
-	public void MyButton1ActionPerformed(MouseEvent e,UserWallet u) { 
-		Register jfrm1= new Register(u);
+	public void toRegister() { 
+		Register jfrm1= new Register();
 		jfrm1.frame.setVisible(true);
 		this.frame.setVisible(false);
 		this.frame.dispose();
 	}
-	public void readArray (String File, JTextField txtUsername, JPasswordField passwordField, ActionEvent x, UserWallet u) {
+	
+	public void cekAkun(JTextField txtUsername, JPasswordField passwordField) {
 		@SuppressWarnings("deprecation")
 		String email = txtUsername.getText(),pass = passwordField.getText();
-		int line = 0;
-		BufferedReader fileInput;
-		File file = new File(File);
-		if(file.exists()) {
-			try {
-				fileInput = new BufferedReader(new FileReader(new File(File)));
-				String line2;
-				try {
-					line2 = fileInput.readLine();
-					while(line2 != null) {
-						line+=1;
-						line2 = fileInput.readLine();
-					}
-					fileInput.close();
-				} catch (IOException e) {
-					System.out.println(e.getMessage());
-					e.printStackTrace();
-				}
-			} catch (FileNotFoundException e) {
-				System.out.println(e.getMessage());
-				e.printStackTrace();
-			}
-			
-			String[] words = new String[line];
-			int i =0;
-			BufferedReader fileHasil;
-			try {
-				fileHasil = new BufferedReader(new FileReader(new File("user.txt")));
-				String line2;
-				try {
-					line2 = fileHasil.readLine();
-					while(line2 != null) {
-						words[i] = line2;	
-						i++;
-						line2 = fileHasil.readLine();
-					}
-					fileHasil.close();
-				} catch (IOException e) {
-					System.out.println(e.getMessage());
-					e.printStackTrace();
-				}
-				
-			} catch (FileNotFoundException e) {
-				System.out.println(e.getMessage());
-				e.printStackTrace();
-			}
-			
-			for(int j=1; j < words.length; j+=4) {
-				if(words[j].equals(email) && words[j+1].equals(pass)) {
+		ConnectionDataBase db = new ConnectionDataBase();
+		db.connectDB();
+		try(db.con) {
+			String query = "select * from user_akun where email = ? and password = ?";
+			ResultSet rs;
+			try (PreparedStatement pr = db.con.prepareStatement(query)){
+				pr.setString(1, email);
+				pr.setString(2, pass);
+				rs = pr.executeQuery();
+				if(rs.next()) {
 					Main.User = email;
-					this.ToHome(x, u);
-					break;
+					this.ToHome();
 				}
-				else if(!words[j].equals(email) && !words[j+1].equals(pass) && j+2==words.length) {
-					JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!",
-							"Login", JOptionPane.WARNING_MESSAGE, new ImageIcon("images/Lock.png"));
-					break;
+				else {
+					JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!","Login"
+							,JOptionPane.WARNING_MESSAGE, new ImageIcon("images/Lock.png"));
 				}
-				else if(!words[j].equals(email) && words[j+1].equals(pass) && j+2==words.length) {
-					JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!",
-							"Login", JOptionPane.WARNING_MESSAGE, new ImageIcon("images/Lock.png"));
-					break;
-				}
-				else if(words[j].equals(email) && !words[j+1].equals(pass) && j+2==words.length) {
-					JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!",
-							"Login", JOptionPane.WARNING_MESSAGE, new ImageIcon("images/Lock.png"));
-					break;
-				}
+				rs.close();
+			} catch (SQLException e) {
+				System.out.println("error: "+e.getMessage());
 			}
+			
+			
+		} catch (SQLException e) {
+			System.out.println("error: "+e.getMessage());
 		}
-		else {
-			JOptionPane.showMessageDialog(frame, "Username atau Password yang anda masukan salah!!!","Login"
-					,JOptionPane.WARNING_MESSAGE, new ImageIcon("images/Lock.png"));
-		}
-		
+		db.closeDB();
 	}
 	public void Clicked(MouseEvent e, JLabel j) {
 		if(!this.check) {
@@ -274,8 +231,8 @@ public class Wallet  extends AbstractBorder{
 			this.check = false;
 		}
 	}
-	public void ToHome(ActionEvent evt,UserWallet u) { 
-		Home jfrm1= new Home(u); 
+	public void ToHome() { 
+		Home jfrm1= new Home(); 
 		jfrm1.frame.setVisible(true);
 		this.frame.setVisible(false);
 		this.frame.dispose();

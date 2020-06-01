@@ -3,7 +3,12 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
-
+//import java.io.BufferedReader;
+//import java.io.File;
+//import java.io.FileNotFoundException;
+//import java.io.FileReader;
+//import java.io.FileWriter;
+//import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,7 +41,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
-public class AddBalance extends AbstractBorder implements BackHome{
+public class test extends AbstractBorder implements BackHome{
 
 	private static final long serialVersionUID = 1L;
 	public JFrame frame;
@@ -64,13 +69,13 @@ public class AddBalance extends AbstractBorder implements BackHome{
     /**
 	 * @wbp.parser.constructor
 	 */
-	public AddBalance(Currency c) {
+	public test(Currency c) {
 		this.initialize(c);
 	}
-	public AddBalance(Color color) {
+	public test(Color color) {
 		this(color, 4, 8, 7);
 	}
-	public AddBalance(
+	public test(
 		    Color color, int thickness, int radii, int pointerSize) {
 	        this.thickness = thickness;
 	        this.radii = radii;
@@ -196,7 +201,27 @@ public class AddBalance extends AbstractBorder implements BackHome{
 	
 //History method idr
 	public void createHistoryIDR(double idr1,double idr,ConnectionDataBase db,ResultSet rs) {
-
+//		File history = new File("profile/"+Main.User+"history.txt");
+//		if(!history.exists()) {
+//			try {
+//				history.createNewFile();
+//				FileWriter Write = new FileWriter(history);
+//				Write.write("Pemasukkan sebesar Rp."+idr+"\n");
+//				Write.close();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		else {
+//			try {
+//				history.createNewFile();
+//				FileWriter Write = new FileWriter(history,true);
+//				Write.write("Pemasukkan sebesar Rp."+idr+"\n");
+//				Write.close();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
 		try(PreparedStatement pr = db.con.prepareStatement(this.storedProcedure)) {
 			pr.setString(1,Main.User);
 			pr.setString(2, "Pemasukan sebesar Rp."+Math.round(idr1));
@@ -214,7 +239,27 @@ public class AddBalance extends AbstractBorder implements BackHome{
 	
 //History method usd
 	public void createHistoryUSD(double idr,double usd1,ResultSet rs,ConnectionDataBase db) {
-
+//		File history = new File("profile/"+Main.User+"history.txt");
+//		if(!history.exists()) {
+//			try {
+//				history.createNewFile();
+//				FileWriter Write = new FileWriter(history);
+//				Write.write("Pemasukkan sebesar $"+usd+"\n");
+//				Write.close();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		else {
+//			try {
+//				history.createNewFile();
+//				FileWriter Write = new FileWriter(history,true);
+//				Write.write("Pemasukkan sebesar $"+usd+"\n");
+//				Write.close();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
 		try(PreparedStatement pr = db.con.prepareStatement(this.storedProcedure)) {
 			pr.setString(1,Main.User);
 			pr.setString(2, "Pemasukan sebesar $"+Math.round(usd1));
@@ -235,6 +280,36 @@ public class AddBalance extends AbstractBorder implements BackHome{
 	
 	public void AddBalanceFunction(JTextField textField,JComboBox<String> comboBox) {
 		String value = textField.getText();
+		
+//		String info = "";
+//		int count = 0;
+//		try {
+//			BufferedReader infoinput = new BufferedReader (new FileReader(new File("profile/"+Main.User+".txt")));
+//			try {
+//				info = infoinput.readLine();
+//				while(info != null) {
+//					count += 1;
+//					switch(count) {
+//					case 1 : name = info; break;
+//					case 2 : password = info; break;
+//					case 3 : email = info; break;
+//					case 4 : brth = info; break;
+//					case 5 : address = info;break;
+//					case 6 : balance = info;break;
+//					default : break;
+//					}
+//					info = infoinput.readLine();
+//				}				
+//				infoinput.close();
+//				
+//			}catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//			
+//			}catch (FileNotFoundException e) {
+//				e.printStackTrace();
+//			}
+//		System.out.println(balance);
 		Pattern pat = Pattern.compile(this.numPat);
 		Matcher mat = pat.matcher(value);
 		boolean ok = mat.matches();
@@ -280,6 +355,65 @@ public class AddBalance extends AbstractBorder implements BackHome{
 						db.closeDB();
 						JOptionPane.showMessageDialog(frame, "Transaksi Berhasil", "Input Success", JOptionPane.WARNING_MESSAGE,new ImageIcon("images/save.png"));
 					}
+					
+//					File f2 = new File("profile/"+Main.User+".txt");
+//					File file = new File("profile/temp.txt");
+//					
+//					this.createHistoryIDR(idr);
+//		
+////Overwrite file	
+//					if(!file.exists()) {
+//						try {
+//							file.createNewFile();
+//							FileWriter Write = new FileWriter(file);
+//					
+//							Write.write(""+name+"\n"+password+"\n"+ 
+//									    email + "\n" + brth +
+//									    "\n" + address+"\n"+Math.round(idr2.getValue()));
+//							
+//							Write.close();
+//						} 
+//						catch (IOException e) {
+//							e.printStackTrace();
+//						}
+						
+//					}
+					
+//					else {
+//						FileWriter reWrite;
+//						try {
+//							reWrite = new FileWriter(file,false);
+//							reWrite.write(""+name+"\n"+password+"\n"+ 
+//								    email + "\n" + brth +
+//								    "\n" + address+"\n"+Math.round(idr2.getValue()));
+//							System.out.println("ternyata masuk else");
+//							
+//							reWrite.close();
+//						} 
+//						catch (IOException e) {
+//							System.out.println(e.getMessage());
+//							e.printStackTrace();
+//						}	
+//						
+//					}
+					
+//					if(f2.exists()) {
+//						FileWriter reWrite;
+//						try {
+//							reWrite = new FileWriter(f2,false);
+//							reWrite.write(""+name+"\n"+password+"\n"+ 
+//								    email + "\n" + brth +
+//								    "\n" + address+"\n"+Math.round(idr2.getValue()));
+//							System.out.println("ternyata masuk else");
+//							JOptionPane.showMessageDialog(frame, "Transaksi Berhasil", "Input Success", JOptionPane.PLAIN_MESSAGE);
+//							reWrite.close();
+//						} catch (IOException e) {
+//							
+//							e.printStackTrace();
+//						}
+//								
+//					}
+////overwrite file end
 				}
 				else {
 					JOptionPane.showMessageDialog(frame, "Input yang anda masukan salah!","Input Error",JOptionPane.WARNING_MESSAGE);
@@ -290,6 +424,7 @@ public class AddBalance extends AbstractBorder implements BackHome{
 				System.out.println("masuk usd");
 				  double usd1 = Double.parseDouble(value);
 				  if(usd1 > 0) {
+//					this.createHistoryUSD(usd);
 					  int keluar = JOptionPane.showConfirmDialog(frame, "Apakah Anda yakin?","Log Out",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE,new ImageIcon("images/save.png"));
 					  if(keluar == 0) {
 						  USD usd2 = new USD();
@@ -312,6 +447,42 @@ public class AddBalance extends AbstractBorder implements BackHome{
 						  db.closeDB();
 						  JOptionPane.showMessageDialog(frame, "Transaksi Berhasil", "Input Success", JOptionPane.WARNING_MESSAGE,new ImageIcon("images/save.png"));
 					  }
+					  
+//					idr2.addValue(usd2.getValue());
+//					System.out.println(usd2.getValue());
+//					File f3 = new File("profile/"+Main.User+".txt");
+//					File file1 = new File("profile/temp.txt");
+//				
+//				//overwrite file
+//					if (file1.exists()){
+//						FileWriter reWrite;
+//						try {
+//							reWrite = new FileWriter(file1,false);
+//							reWrite.write(""+name+"\n"+password+"\n"+ 
+//								    email + "\n" + brth +
+//								    "\n" + address+"\n"+Math.round(idr2.getValue()));
+//							System.out.println("ternyata masuk else");
+//							reWrite.close();
+//							} 
+//						catch (IOException e) {
+//							e.printStackTrace();
+//							}				
+//					}
+//					
+//					if(f3.exists()) {
+//						FileWriter reWrite;
+//						try {
+//							reWrite = new FileWriter(f3,false);
+//							reWrite.write(""+name+"\n"+password+"\n"+ 
+//								    email + "\n" + brth +
+//								    "\n" + address+"\n"+Math.round(idr2.getValue()));
+//							System.out.println("ternyata masuk else");
+//							JOptionPane.showMessageDialog(frame, "Transaksi Berhasil", "Input Success", JOptionPane.PLAIN_MESSAGE);
+//							reWrite.close();
+//						} catch (IOException e) {
+//							e.printStackTrace();
+//						}
+//					}
 				  }
 				  
 				}//end usd check	

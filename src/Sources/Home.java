@@ -7,59 +7,68 @@ import java.awt.Cursor;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+//import java.io.BufferedReader;
+//import java.io.File;
+//import java.io.FileNotFoundException;
+//import java.io.FileReader;
+//import java.io.IOException;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.Toolkit;
 import javax.swing.SwingConstants;
+//import java.awt.Frame;
+import java.util.Locale;
 
 public class Home {
 	
 	public JFrame frame;
-	public String name, email, body, address;
-	public String balance;
+	private String name;
+	private Double balance;
 	
-	public Home(UserWallet u) {
-		initialize(u);
+	public Home() {
+		initialize();
 		
 	}
 	
-	private void initialize(UserWallet u) {
-		String info = "";
-		int count = 0;
-		try {
-			BufferedReader infoinput = new BufferedReader (new FileReader(new File("profile/"+Main.User+".txt")));
-			try {
-				info = infoinput.readLine();
-				while(info != null) {
-					count += 1;
-					switch(count) {
-					case 1 : name = info; break;
-					case 2 : break;
-					case 3 : email = info; break;
-					case 4 : body = info; break;
-					case 5 : address = info;break;
-					case 6 : balance = info;break;
-					default : break;
-					}
-					info = infoinput.readLine();
-				}
-				infoinput.close();
-			}catch (IOException e) {
-				e.printStackTrace();
+	private void initialize() {
+		ConnectionDataBase db = new ConnectionDataBase();
+		db.connectDB();
+		String query = "SELECT saldo From user_saldo where user_email = ?";
+		String sql = "Select nama from user_akun where email = ?";
+		ResultSet rs;
+		try (PreparedStatement pr = db.con.prepareStatement(query)){
+			pr.setString(1, Main.User);
+			rs = pr.executeQuery();
+			if(rs.next()) {
+				this.balance = rs.getDouble("saldo");
+				
 			}
-			}catch (FileNotFoundException e) {
-				e.printStackTrace();
-		
+		} catch (SQLException e) {
+			System.out.println("error: "+e.getMessage());
+			e.printStackTrace();
+		}
+		try(PreparedStatement pr = db.con.prepareStatement(sql)){
+			pr.setString(1, Main.User);
+			rs = pr.executeQuery();
+			if(rs.next()) {
+				this.name =rs.getString("nama");
+			}
+		}
+		catch (SQLException e1) {
+			System.out.println("error: "+e1.getMessage());
+			e1.printStackTrace();
 		}
 		
+		
+		
+		IDR idr = new IDR(this.balance);
 		frame = new JFrame();
+		frame.setLocale(new Locale("jv", "ID"));
 		frame.setResizable(false);
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/wallet.png"));
 		frame.setTitle("E-WAllet");
@@ -85,7 +94,7 @@ public class Home {
 		profile.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				toProfile(e, u);
+				toProfile();
 			}
 		});
 		profile.setToolTipText("Cek Profil Kamu");
@@ -101,7 +110,7 @@ public class Home {
 		addBalance.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		addBalance.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				toAddBalance(e,u);
+				toAddBalance(idr);
 			}
 		});
 		
@@ -114,7 +123,7 @@ public class Home {
 		withdrawBalance.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		withdrawBalance.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				toWithdrawBalance(e,u);
+				toWithdrawBalance(idr);
 			}
 		});
 		
@@ -134,7 +143,7 @@ public class Home {
 		saldo.setBounds(191, 139, 77, 14);
 		frame.getContentPane().add(saldo);
 		
-		JLabel saldoValue = new JLabel("Rp."+balance);
+		JLabel saldoValue = new JLabel("Rp."+Math.round(this.balance));
 		saldoValue.setHorizontalAlignment(SwingConstants.CENTER);
 		saldoValue.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
 		saldoValue.setBounds(100, 163, 243, 25);
@@ -146,7 +155,7 @@ public class Home {
 		history.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				toHistory(e, u);
+				toHistory();
 			}
 		});
 		history.setIcon(new ImageIcon("images/HISTORY.png"));
@@ -169,26 +178,26 @@ public class Home {
 	}
 	
 
-	public void toAddBalance(ActionEvent evt,UserWallet u) {
-		AddBalance pro1 = new AddBalance(u);
+	public void toAddBalance(Currency c) {
+		AddBalance pro1 = new AddBalance(c);
 		pro1.frame.setVisible(true);
 		this.frame.setVisible(true);
 		this.frame.dispose();
 	}
-	public void toWithdrawBalance(ActionEvent evt, UserWallet u) {
-		WithdrawBalance pro1 = new WithdrawBalance(u);
+	public void toWithdrawBalance(Currency c) {
+		WithdrawBalance pro1 = new WithdrawBalance(c);
 		pro1.frame.setVisible(true);
 		this.frame.setVisible(true);
 		this.frame.dispose();
 	}
-	public void toProfile(MouseEvent e, UserWallet u) {
-		Profile pro1= new Profile(u);
+	public void toProfile() {
+		Profile pro1= new Profile();
 		pro1.frame.setVisible(true);
 		this.frame.setVisible(false);
 		this.frame.dispose();
 	}
-	public void toHistory(MouseEvent e, UserWallet u ) {
-		History h1 = new History(u);
+	public void toHistory() {
+		History h1 = new History();
 		h1.frame.setVisible(true);
 		this.frame.setVisible(false);
 		this.frame.dispose();

@@ -1,18 +1,22 @@
 package Sources;
 
 import java.awt.EventQueue;
+import javax.swing.UIManager;
+
 
 public class Main {
 	public static String User;
-	public static String getUser() {
-		return User;
-	}
+	private static UIManager.LookAndFeelInfo[] lookFeel = null;
+	
+	
 	public static void main(String[] args) throws Exception {
-		UserWallet r = new UserWallet();
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Wallet window = new Wallet(r);
+					lookFeel = UIManager.getInstalledLookAndFeels();
+					UIManager.setLookAndFeel(lookFeel[1].getClassName());
+					Wallet window = new Wallet();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

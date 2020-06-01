@@ -8,11 +8,14 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 
 import javax.swing.ImageIcon;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+//import java.io.BufferedReader;
+//import java.io.File;
+//import java.io.FileNotFoundException;
+//import java.io.FileReader;
+//import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
@@ -22,40 +25,34 @@ import javax.swing.SwingConstants;
 public class Profile implements BackHome{
 
 	public JFrame frame;
-	public String nam, eml, bdy, ads;
+	private String nam, eml, bdy, ads;
 	public ImageIcon icon;
-	private BufferedReader infoInput;
-	public Profile(UserWallet u) {
-		initialize(u);
+	private String sql = "select nama,email,tglLahir,alamat from user_akun where email = ?";
+	private ResultSet rs;
+	public Profile() {
+		initialize();
 	}
 
-	private void initialize(UserWallet u) {
-		String info = "";
-		int lihat = 0;
-		try {
-			this.infoInput= new BufferedReader(new FileReader(new File("profile/"+Main.User+".txt")));
-			try {
-				info = infoInput.readLine();
-				while(info != null) {
-					lihat += 1;
-					switch(lihat) {
-						case 1 : nam = info; break;
-						case 2 : break;
-						case 3 : eml = info; break;
-						case 4 : bdy = info; break;
-						case 5 : ads = info; break;
-						default : break;
-					}
-					info = infoInput.readLine();
-				}
-			} catch (IOException e) {
-				System.out.println(e.getMessage());
-				e.printStackTrace();
+	private void initialize() {
+		ConnectionDataBase db = new ConnectionDataBase();
+		db.connectDB();
+		try(PreparedStatement ps = db.con.prepareStatement(sql)){
+			ps.setString(1, Main.User);
+			this.rs = ps.executeQuery();
+			if(rs.next()) {
+				this.nam = rs.getString("nama");
+				this.ads = rs.getString("alamat");
+				this.bdy = rs.getString("tglLahir");
+				this.eml = rs.getString("email");
 			}
-		} catch (FileNotFoundException e) {
-			System.out.println(e.getMessage());
+			this.rs.close();
+			ps.close();
+			db.closeDB();
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 		
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -120,7 +117,7 @@ public class Profile implements BackHome{
 		back.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				toHome(u);
+				toHome();
 			}
 		});
 		back.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -144,7 +141,7 @@ public class Profile implements BackHome{
 		logOut.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				logOut(e, u);
+				logOut();
 			}
 		});
 		logOut.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -152,11 +149,11 @@ public class Profile implements BackHome{
 		frame.getContentPane().add(logOut);
 	}
 	
-	public void logOut(MouseEvent e, UserWallet u) {
+	public void logOut() {
 		int keluar = JOptionPane.showConfirmDialog(frame, "Apakah Anda Benar ingin keluar?","Log Out",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE,new ImageIcon("images/Exit.png"));
 		switch (keluar) {
 			case 0: 
-				Wallet pro1= new Wallet(u);
+				Wallet pro1= new Wallet();
 				pro1.frame.setVisible(true);
 				this.frame.setVisible(false);
 				this.frame.dispose();
@@ -172,8 +169,8 @@ public class Profile implements BackHome{
 		
 	}
 	@Override
-	public void toHome(UserWallet u) {
-		Home pro1= new Home(u);
+	public void toHome() {
+		Home pro1= new Home();
 		pro1.frame.setVisible(true);
 		this.frame.setVisible(false);
 		this.frame.dispose();
