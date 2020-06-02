@@ -162,7 +162,7 @@ public class WithdrawBalance extends AbstractBorder implements BackHome{
 	public void createHistoryWithdraw(ConnectionDataBase db,double idr,double idr1) {
 		try(PreparedStatement pr = db.con.prepareStatement(this.storedProcedure)) {
 			pr.setString(1,Main.User);
-			pr.setString(2, "Pemasukan sebesar Rp."+Math.round(idr));
+			pr.setString(2, "Pengeluaran sebesar Rp."+Math.round(idr));
 			pr.setDouble(3, idr1);
 			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 			pr.setDate(4, date);
