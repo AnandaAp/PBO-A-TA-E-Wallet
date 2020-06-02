@@ -12,4 +12,4 @@ This App contains fitures:
 2. Add money
 3. Draw Cash / Transfer to User's bank account
 4. Auto Currency Converter (USD$ to IDR)
-5. history
+5. History
