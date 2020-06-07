@@ -39,6 +39,7 @@ import javax.swing.DefaultComboBoxModel;
 public class AddBalance extends AbstractBorder implements BackHome{
 
 	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("exports")
 	public JFrame frame;
 	private JTextField textField;
 	private JButton confirmButton;
@@ -55,10 +56,11 @@ public class AddBalance extends AbstractBorder implements BackHome{
     RenderingHints hints;
     private final String numPat = "\\d+";
     private JLabel lblNewLabel_3;
-    public ImageIcon icon;
+    @SuppressWarnings("exports")
+	public ImageIcon icon;
     
-    private String query = "select saldo from user_saldo where user_email = ?";
-    private String sql = "UPDATE user_saldo set saldo = ? where user_email = ?";
+    private String query = "select saldo from user_saldo where email = ?";
+    private String sql = "UPDATE user_saldo set saldo = ? where email = ?";
     private String storedProcedure = "call setelah_transaksi(?,?,?,?)";
     private JComboBox<String> comboBox;
     /**
@@ -67,11 +69,11 @@ public class AddBalance extends AbstractBorder implements BackHome{
 	public AddBalance(Currency c) {
 		this.initialize(c);
 	}
-	public AddBalance(Color color) {
+	public AddBalance(@SuppressWarnings("exports") Color color) {
 		this(color, 4, 8, 7);
 	}
 	public AddBalance(
-		    Color color, int thickness, int radii, int pointerSize) {
+		    @SuppressWarnings("exports") Color color, int thickness, int radii, int pointerSize) {
 	        this.thickness = thickness;
 	        this.radii = radii;
 	        this.pointerSize = pointerSize;
@@ -195,7 +197,7 @@ public class AddBalance extends AbstractBorder implements BackHome{
 	}
 	
 //History method idr
-	public void createHistoryIDR(double idr1,double idr,ConnectionDataBase db,ResultSet rs) {
+	public void createHistoryIDR(double idr1,double idr,ConnectionDataBase db,@SuppressWarnings("exports") ResultSet rs) {
 
 		try(PreparedStatement pr = db.con.prepareStatement(this.storedProcedure)) {
 			pr.setString(1,Main.User);
@@ -213,7 +215,7 @@ public class AddBalance extends AbstractBorder implements BackHome{
 	}
 	
 //History method usd
-	public void createHistoryUSD(double idr,double usd1,ResultSet rs,ConnectionDataBase db) {
+	public void createHistoryUSD(double idr,double usd1,@SuppressWarnings("exports") ResultSet rs,ConnectionDataBase db) {
 
 		try(PreparedStatement pr = db.con.prepareStatement(this.storedProcedure)) {
 			pr.setString(1,Main.User);
@@ -233,7 +235,7 @@ public class AddBalance extends AbstractBorder implements BackHome{
 	
 //Addbalance
 	
-	public void AddBalanceFunction(JTextField textField,JComboBox<String> comboBox) {
+	public void AddBalanceFunction(@SuppressWarnings("exports") JTextField textField,JComboBox<String> comboBox) {
 		String value = textField.getText();
 		Pattern pat = Pattern.compile(this.numPat);
 		Matcher mat = pat.matcher(value);
@@ -331,16 +333,19 @@ public class AddBalance extends AbstractBorder implements BackHome{
 		
 	}//end method
 	
+	@SuppressWarnings("exports")
 	@Override
 	public Insets getBorderInsets(Component c) {
 	    return insets;
 	}
 	
+	@SuppressWarnings("exports")
 	@Override
 	public Insets getBorderInsets(Component c, Insets insets) {
 	    return getBorderInsets(c);
 	}
 	
+	@SuppressWarnings("exports")
 	@Override
 	public void paintBorder(
 	    Component c,

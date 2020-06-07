@@ -26,6 +26,7 @@ import java.util.Locale;
 
 public class Home {
 	
+	@SuppressWarnings("exports")
 	public JFrame frame;
 	private String name;
 	private Double balance;
@@ -38,7 +39,7 @@ public class Home {
 	private void initialize() {
 		ConnectionDataBase db = new ConnectionDataBase();
 		db.connectDB();
-		String query = "SELECT saldo From user_saldo where user_email = ?";
+		String query = "SELECT saldo From user_saldo where email = ?";
 		String sql = "Select nama from user_akun where email = ?";
 		ResultSet rs;
 		try (PreparedStatement pr = db.con.prepareStatement(query)){

@@ -39,6 +39,7 @@ public class WithdrawBalance extends AbstractBorder implements BackHome{
 
 	
 	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("exports")
 	public JFrame frame;
 	private JTextField idrTextField;
 	private double balance;
@@ -52,9 +53,10 @@ public class WithdrawBalance extends AbstractBorder implements BackHome{
     private int pointerPad = 4;
     RenderingHints hints;
     private String numPat = "\\d+";
-    public ImageIcon icon;
-    private String query = "select saldo from user_saldo where user_email = ?";
-    private String sql = "UPDATE user_saldo set saldo = ? where user_email = ?";
+    @SuppressWarnings("exports")
+	public ImageIcon icon;
+    private String query = "select saldo from user_saldo where email = ?";
+    private String sql = "UPDATE user_saldo set saldo = ? where email = ?";
     private String storedProcedure = "call setelah_transaksi(?,?,?,?)";
     private ResultSet rs;
     
@@ -64,11 +66,11 @@ public class WithdrawBalance extends AbstractBorder implements BackHome{
 	public WithdrawBalance(Currency u) {
 		this.initialize(u);
 	}
-	public WithdrawBalance(Color color) {
+	public WithdrawBalance(@SuppressWarnings("exports") Color color) {
 		this(color, 4, 8, 7);
 	}
 	public WithdrawBalance(
-		    Color color, int thickness, int radii, int pointerSize) {
+		    @SuppressWarnings("exports") Color color, int thickness, int radii, int pointerSize) {
 	        this.thickness = thickness;
 	        this.radii = radii;
 	        this.pointerSize = pointerSize;
@@ -137,7 +139,7 @@ public class WithdrawBalance extends AbstractBorder implements BackHome{
 		frame.getContentPane().add(copyRight);
 		this.icon = new ImageIcon("images/Back.png");
 		JLabel back = new JLabel("");
-		back.setIcon(new ImageIcon("images/Back.png"));
+		back.setIcon(new ImageIcon(("images/Back.png")));
 		back.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -176,6 +178,7 @@ public class WithdrawBalance extends AbstractBorder implements BackHome{
 		}
 	}
 //Withdraw Function
+	@SuppressWarnings("exports")
 	public void WithdrawFunction(JTextField textField) {
 		String value = textField.getText();
 		Pattern pat = Pattern.compile(numPat);
@@ -234,16 +237,19 @@ public class WithdrawBalance extends AbstractBorder implements BackHome{
 		}
 	}
 	
+	@SuppressWarnings("exports")
 	@Override
 	public Insets getBorderInsets(Component c) {
 	    return insets;
 	}
 	
+	@SuppressWarnings("exports")
 	@Override
 	public Insets getBorderInsets(Component c, Insets insets) {
 	    return getBorderInsets(c);
 	}
 	
+	@SuppressWarnings("exports")
 	@Override
 	public void paintBorder(
 	    Component c,

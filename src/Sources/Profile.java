@@ -24,8 +24,10 @@ import javax.swing.SwingConstants;
 
 public class Profile implements BackHome{
 
+	@SuppressWarnings("exports")
 	public JFrame frame;
 	private String nam, eml, bdy, ads;
+	@SuppressWarnings("exports")
 	public ImageIcon icon;
 	private String sql = "select nama,email,tglLahir,alamat from user_akun where email = ?";
 	private ResultSet rs;

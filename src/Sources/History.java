@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 public class History implements BackHome{
 	public String transaksi1, transaksi2, transaksi3, transaksi4;
 	public String transaksi5;
+	@SuppressWarnings("exports")
 	public JFrame frame;
 	private ImageIcon icon;
 	private String sql = "select * from history where email = ?";
@@ -90,7 +91,7 @@ public class History implements BackHome{
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
-		this.icon = new ImageIcon("images/Back.png");
+		this.icon = new ImageIcon(("images/Back.png"));
 		JLabel back = new JLabel("");
 		back.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		back.addMouseListener(new MouseAdapter() {

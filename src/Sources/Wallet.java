@@ -40,6 +40,7 @@ public class Wallet  extends AbstractBorder{
 	 */
 	private static final long serialVersionUID = 1L;
 	private JLabel hideAndShowPassword;
+	@SuppressWarnings("exports")
 	public JFrame frame;
 	private JTextField emailField;
 	private JPasswordField passwordField;
@@ -61,9 +62,10 @@ public class Wallet  extends AbstractBorder{
 	public Wallet() {
 		this.initialize();
 	}
-	public Wallet(Color color) {
+	public Wallet(@SuppressWarnings("exports") Color color) {
 		this(color, 4, 8, 7);
 	}
+	@SuppressWarnings("exports")
 	public Wallet(
 		    Color color, int thickness, int radii, int pointerSize) {
 	        this.thickness = thickness;
@@ -184,6 +186,7 @@ public class Wallet  extends AbstractBorder{
 		this.frame.dispose();
 	}
 	
+	@SuppressWarnings("exports")
 	public void cekAkun(JTextField txtUsername, JPasswordField passwordField) {
 		@SuppressWarnings("deprecation")
 		String email = txtUsername.getText(),pass = passwordField.getText();
@@ -215,6 +218,7 @@ public class Wallet  extends AbstractBorder{
 		}
 		db.closeDB();
 	}
+	@SuppressWarnings("exports")
 	public void Clicked(MouseEvent e, JLabel j) {
 		if(!this.check) {
 			this.passwordField.setEchoChar((char)0);
@@ -237,16 +241,19 @@ public class Wallet  extends AbstractBorder{
 		this.frame.setVisible(false);
 		this.frame.dispose();
 	}
+	@SuppressWarnings("exports")
 	@Override
 	public Insets getBorderInsets(Component c) {
 	    return insets;
 	}
 	
+	@SuppressWarnings("exports")
 	@Override
 	public Insets getBorderInsets(Component c, Insets insets) {
 	    return getBorderInsets(c);
 	}
 	
+	@SuppressWarnings("exports")
 	@Override
 	public void paintBorder(
 	    Component c,
