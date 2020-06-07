@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>C:\Users\Ananda Apriliansyah\Documents\Kuliah\Semester IV\PBO\E-Wallet\E-Wallet.jar</jar>
+  <outfile>C:\Users\Ananda Apriliansyah\Documents\Kuliah\Semester IV\PBO\E-Wallet\E-Wallet.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon>C:\Users\Ananda Apriliansyah\Documents\Kuliah\Semester IV\PBO\E-Wallet\images\wallet.ico</icon>
+  <singleInstance>
+    <mutexName>E-Wallet</mutexName>
+    <windowTitle>E-Wallet</windowTitle>
+  </singleInstance>
+  <jre>
+    <path>jdk-13.0.2</path>
+    <bundledJre64Bit>true</bundledJre64Bit>
+    <bundledJreAsFallback>false</bundledJreAsFallback>
+    <minVersion>1.8.0_251</minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+    <runtimeBits>64/32</runtimeBits>
+  </jre>
+  <versionInfo>
+    <fileVersion>1.0.3.1</fileVersion>
+    <txtFileVersion>1.0.3.1.F</txtFileVersion>
+    <fileDescription>Aplikasi ini kami gunakan untuk memenuhi persyaratan menyelesaikan mata kuliah PBO</fileDescription>
+    <copyright>PBO A 2020</copyright>
+    <productVersion>1.0.3.1</productVersion>
+    <txtProductVersion>1.0.3.1.F</txtProductVersion>
+    <productName>E-Wallet</productName>
+    <companyName></companyName>
+    <internalName>E-Wallet</internalName>
+    <originalFilename>E-Wallet.exe</originalFilename>
+    <trademarks></trademarks>
+    <language>ENGLISH_US</language>
+  </versionInfo>
+</launch4jConfig>
