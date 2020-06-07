@@ -26,6 +26,7 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.SwingConstants;
 public class Register extends AbstractBorder{
 	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("exports")
 	public JFrame frame;
 	private JTextField fullname,email,birth,address;
 	public static boolean cek = false;
@@ -53,11 +54,11 @@ public class Register extends AbstractBorder{
 	public Register() {
 		this.initialize();
 	}
-	public Register(Color color) {
+	public Register(@SuppressWarnings("exports") Color color) {
 		this(color, 4, 8, 7);
 	}
 	public Register(
-		    Color color, int thickness, int radii, int pointerSize) {
+		    @SuppressWarnings("exports") Color color, int thickness, int radii, int pointerSize) {
 	        this.thickness = thickness;
 	        this.radii = radii;
 	        this.pointerSize = pointerSize;
@@ -219,7 +220,7 @@ public class Register extends AbstractBorder{
 		
 		
 	}
-	public void Clicked(MouseEvent e, JLabel j) {
+	public void Clicked(@SuppressWarnings("exports") MouseEvent e, @SuppressWarnings("exports") JLabel j) {
 		if(!this.check) {
 			this.passwordField.setEchoChar((char)0);
 			this.image =  new ImageIcon("images/eyeclosed.png");
@@ -241,7 +242,7 @@ public class Register extends AbstractBorder{
 		this.frame.setVisible(false);
 		this.frame.dispose();
 	}
-	public void goToUserWaller(JTextField fullname,JTextField email,JPasswordField passwordField,JTextField address,String cekPass,JLabel lblNewLabel_6_1) throws SQLException {
+	public void goToUserWaller(@SuppressWarnings("exports") JTextField fullname,@SuppressWarnings("exports") JTextField email,@SuppressWarnings("exports") JPasswordField passwordField,@SuppressWarnings("exports") JTextField address,String cekPass,@SuppressWarnings("exports") JLabel lblNewLabel_6_1) throws SQLException {
 		UserWallet u = new UserWallet();
 		@SuppressWarnings("deprecation")
 		String nama = fullname.getText(),Email = email.getText(), 
@@ -266,7 +267,7 @@ public class Register extends AbstractBorder{
 				if(!dateMat) {
 					JOptionPane.showMessageDialog(frame, "Format tanggal lahir Salah","Email Error Message",JOptionPane.WARNING_MESSAGE,new ImageIcon("images/Calender.png"));
 				}
-				else {
+				else if(emMat && mat && dateMat){
 					cek = u.Register(nama, tanggalLahir, password, Email, alamat,cek);
 					if(cek == true) {
 						JOptionPane.showMessageDialog(frame, "Email sudah pernah digunakan","Register",JOptionPane.WARNING_MESSAGE,new ImageIcon("images/Mail.png"));
@@ -283,11 +284,13 @@ public class Register extends AbstractBorder{
 						  					  "Register",JOptionPane.WARNING_MESSAGE,new ImageIcon("images/attention.png"));
 			}	
 	}
+	@SuppressWarnings("exports")
 	@Override
 	public Insets getBorderInsets(Component c) {
 	    return insets;
 	}
 	
+	@SuppressWarnings("exports")
 	@Override
 	public Insets getBorderInsets(Component c, Insets insets) {
 	    return getBorderInsets(c);
@@ -295,8 +298,8 @@ public class Register extends AbstractBorder{
 	
 	@Override
 	public void paintBorder(
-	    Component c,
-	    Graphics g,
+	    @SuppressWarnings("exports") Component c,
+	    @SuppressWarnings("exports") Graphics g,
 	    int x, int y,
 	    int width, int height) {
 	
